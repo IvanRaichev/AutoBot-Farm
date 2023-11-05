@@ -3,7 +3,7 @@
     "beforeDevCommand": "",
     "beforeBuildCommand": "",
     "devPath": "../src",
-    "distDir": "../src",
+    "distDir": "../dist",
     "withGlobalTauri": true
   },
   "package": {
@@ -12,16 +12,23 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false,
+      "all": true,
       "shell": {
         "all": false,
         "open": true
+      },
+      "window": {
+        "all": true,
+        "create": true
+      },
+      "path": {
+        "all": true
       }
     },
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "myappdev",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -41,6 +48,11 @@
         "width": 800,
         "height": 600
       }
-    ]
+    ],
+    "updater": {
+      "windows": {
+        "installMode": "passive"
+      }
+    }
   }
 }
