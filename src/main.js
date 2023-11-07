@@ -40,35 +40,35 @@ function startRender() {
 }
 
 
-// async function findImageOnScreen() {
-//    // Замените 'путь_к_изображению.png' на путь к изображению, которое вы хотите найти на экране.
-//    const imagePath = './resources/images/search/find.PNG';
+async function findImageOnScreen() {
+   // Замените 'путь_к_изображению.png' на путь к изображению, которое вы хотите найти на экране.
+   const imagePath = './resources/images/search/find.PNG';
 
-//    // Захватываем снимок экрана
-//    const screenCapture = robot.screen.capture();
+   // Захватываем снимок экрана
+   const screenCapture = robot.screen.capture();
 
-//    // Загружаем целевое изображение
-//    const targetImage = PNG.sync.read(fs.readFileSync(imagePath));
+   // Загружаем целевое изображение
+   const targetImage = PNG.sync.read(fs.readFileSync(imagePath));
 
-//    // Создаем PNG изображение на основе снимка экрана
-//    const screenImage = new PNG({ width: screenCapture.width, height: screenCapture.height });
-//    screenImage.data = screenCapture.image;
+   // Создаем PNG изображение на основе снимка экрана
+   const screenImage = new PNG({ width: screenCapture.width, height: screenCapture.height });
+   screenImage.data = screenCapture.image;
 
-//    // Создаем временное изображение для хранения результатов сравнения
-//    const diffImage = new PNG({ width: screenCapture.width, height: screenCapture.height });
+   // Создаем временное изображение для хранения результатов сравнения
+   const diffImage = new PNG({ width: screenCapture.width, height: screenCapture.height });
 
-//    // Сравниваем изображения с помощью pixelmatch
-//    const numDiffPixels = pixelmatch(screenImage.data, targetImage.data, diffImage.data, screenCapture.width, screenCapture.height, {
-//       threshold: 0.1, // Порог сходства
-//    });
+   // Сравниваем изображения с помощью pixelmatch
+   const numDiffPixels = pixelmatch(screenImage.data, targetImage.data, diffImage.data, screenCapture.width, screenCapture.height, {
+      threshold: 0.1, // Порог сходства
+   });
 
-//    if (numDiffPixels < 1000) { // Устанавливаем порог для считывания изображения как найденного
-//       console.log('Изображение найдено на экране.');
-//       // Вы можете выполнить дополнительные действия при обнаружении изображения.
-//    } else {
-//       console.log('Изображение не найдено на экране.');
-//    }
-// }
+   if (numDiffPixels < 1000) { // Устанавливаем порог для считывания изображения как найденного
+      console.log('Изображение найдено на экране.');
+      // Вы можете выполнить дополнительные действия при обнаружении изображения.
+   } else {
+      console.log('Изображение не найдено на экране.');
+   }
+}
 
 function findAndClickImage(imagePath) {
    const screen = robot.screen.capture();
