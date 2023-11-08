@@ -1,5 +1,6 @@
 const path = require('path');
 const { app, BrowserWindow, ipcMain } = require('electron');
+const mouseEvent = require('./actions/mouse.js');
 const robot = require("robotjs");
 const cv = require('@u4/opencv4nodejs');
 
@@ -18,7 +19,8 @@ function createWindow() {
    win.loadFile('html/index.html');
 
    ipcMain.on('button-clicked', () => {
-     
+     mouseEvent.findAndClickImage();
+     mouseEvent.findImageOnScreen();
    });
 };
 
@@ -37,10 +39,6 @@ function startRender() {
       }
    });
 }
-
-
-
-
 
 
 startRender();

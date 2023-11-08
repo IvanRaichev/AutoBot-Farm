@@ -39,3 +39,8 @@ function findAndClickImage(imagePath) {
       console.log('Изображение не найдено на экране.');
    }
 }
+
+module.exports = {
+   findAndClickImage,
+   findImageOnScreen
+}
