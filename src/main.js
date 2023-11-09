@@ -1,6 +1,7 @@
 const path = require('path');
 const { app, BrowserWindow, ipcMain } = require('electron');
 const mouseEvent = require('./actions/mouse.js');
+const keyEvent = require('./actions/keyboard.js');
 const robot = require("robotjs");
 const cv = require('@u4/opencv4nodejs');
 
@@ -21,6 +22,7 @@ function createWindow() {
    ipcMain.on('button-clicked', () => {
      mouseEvent.findAndClickImage();
      mouseEvent.findImageOnScreen();
+     keyEvent.detectAndPressKey();
    });
 };
 
