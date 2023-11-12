@@ -1,46 +1,61 @@
-function findAndClickImage(imagePath) {
-   const screen = robot.screen.capture();
-   const template = cv.imread(imagePath);
- 
-   const matches = screen.matchTemplate(template, 0.2);
-   const bestMatch = matches.minMaxLoc();
- 
-   if (bestMatch.maxVal > 0.8) {
-     const { x, y } = bestMatch.maxLoc;
-     const centerX = x + template.cols / 2;
-     const centerY = y + template.rows / 2;
- 
-     robot.moveMouse(centerX, centerY);
-     robot.mouseClick();
-   }
- }
 
- async function findImageOnScreen() {
-   const imagePath = './resources/images/search/find.PNG';
+function startBot(robot) {
 
-   const screenCapture = robot.screen.capture();
+   while (true) {
 
-   const targetImage = PNG.sync.read(fs.readFileSync(imagePath));
+      msleep(1000);
 
-   const screenImage = new PNG({ width: screenCapture.width, height: screenCapture.height });
-   screenImage.data = screenCapture.image;
+      let gate = findGate(robot);
 
-   
-   const diffImage = new PNG({ width: screenCapture.width, height: screenCapture.height });
+      if (gate == false) {
+         console.log('Not found Gate');
+      }
 
-   const numDiffPixels = pixelmatch(screenImage.data, targetImage.data, diffImage.data, screenCapture.width, screenCapture.height, {
-      threshold: 0.1, 
-   });
 
-   if (numDiffPixels < 1000) { 
-      console.log('Изображение найдено на экране.');
-   
-   } else {
-      console.log('Изображение не найдено на экране.');
+      robot.moveMouse(gate.x, gate.y);
+      robot.mouseClick();
+
    }
 }
 
+function msleep(n) {
+   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, n);
+}
+
+function findGate(robot) {
+   let captureGate = {
+      x: 1080,
+      y: 432,
+      width: 1110 - 1080,
+      height: 450 - 432
+   };
+
+   let img = robot.screen.capture(captureGate.x, captureGate.y, captureGate.width, captureGate.height);
+   let gateColor = ['54f7f7', '688552', '7f9c5c', '739855'];
+
+   for (let i = 0; i < img.width; i++) {
+      for (let j = 0; j < img.height; j++) {
+         let sampleColor = img.colorAt(i, j);
+
+         if (gateColor.includes(sampleColor)) {
+            let screenX = i + captureArea.x;
+            let screenY = j + captureArea.y;
+
+            console.log("Found a gate at: " + screenX + ", " + screenY);
+            return { x: screenX, y: screenY };
+         }
+      }
+   }
+
+   return false;
+}
+
+function getRandomInt(min, max) {
+   min = Math.ceil(min);
+   max = Math.floor(max);
+   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 module.exports = {
-   findAndClickImage,
-   findImageOnScreen
+   startBot,
 }
