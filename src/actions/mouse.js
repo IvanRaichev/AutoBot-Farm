@@ -1,11 +1,6 @@
-
-function startBot(robot) {
-
+async function startBot(robot) {
    while (true) {
-
-      msleep(2000);
-
-      let gate = findElement(robot,
+      let gate = await findElementWithRetry(robot,
          {
             x: 1080,
             y: 432,
@@ -14,13 +9,13 @@ function startBot(robot) {
          },
          ['54f7f7', '688552', '7f9c5c', '739855']);
 
-      if (gate != false) {
+
+      if (gate !== false) {
+         console.log('Succes')
          mouseUse(robot, gate.x, gate.y);
       }
 
-      msleep(5000);
-
-      let duel = findElement(robot,
+      let duel = await findElementWithRetry(robot,
          {
             x: 925,
             y: 900,
@@ -29,7 +24,21 @@ function startBot(robot) {
          },
          ['cbca32', 'eee132', 'dedc36', 'f6f039']);
 
-      if (duel != false) {
+      msleep(4000);
+
+      if (duel !== false) {
+         console.log('Succes')
+         mouseUse(robot, duel.x, duel.y);
+      }
+
+      msleep(2000);
+      mouseUse(robot, 560, 0);
+      mouseUse(robot, 560, 0);
+
+
+      msleep(1000);
+      if (duel !== false) {
+         console.log('Succes')
          mouseUse(robot, duel.x, duel.y);
       }
    }
@@ -45,8 +54,21 @@ function mouseUse(robot, x, y) {
    robot.mouseClick();
 }
 
+
+
+async function findElementWithRetry(robot, capture, colors) {
+   let element;
+   do {
+      msleep(1000);
+      element = findElement(robot, capture, colors);
+
+   } while (element === false);
+
+   return element;
+}
+
 function findElement(robot, capture, colors) {
-   let img = robot.screen.capture(capture.x, capture.y, capture.width, capture.height);
+   const img = robot.screen.capture(capture.x, capture.y, capture.width, capture.height);
 
    for (let i = 0; i < img.width; i++) {
       for (let j = 0; j < img.height; j++) {
