@@ -1,53 +1,54 @@
 async function startBot(robot) {
-   // while (true) {
-   //    let gate = await findElementWithRetry(robot,
-   //       {
-   //          x: 1080,
-   //          y: 432,
-   //          width: 1110 - 1080,
-   //          height: 450 - 432
-   //       },
-   //       ['54f7f7', '688552', '7f9c5c', '739855']);
+   while (true) {
+      let gate = await findElementWithRetry(robot,
+         {
+            x: 1080,
+            y: 432,
+            width: 1110 - 1080,
+            height: 450 - 432
+         },
+         ['54f7f7', '688552', '7f9c5c', '739855']);
 
 
-   //    if (gate !== false) {
-   //       console.log('Succes')
-   //       mouseUse(robot, gate.x, gate.y);
-   //    }
+      if (gate !== false) {
+         console.log('Succes')
+         mouseUse(robot, gate.x, gate.y);
+      }
 
-   //    let duel = await findElementWithRetry(robot,
-   //       {
-   //          x: 925,
-   //          y: 900,
-   //          width: 1000 - 920,
-   //          height: 950 - 900
-   //       },
-   //       ['cbca32', 'eee132', 'dedc36', 'f6f039']);
+      let duel = await findElementWithRetry(robot,
+         {
+            x: 925,
+            y: 900,
+            width: 1000 - 920,
+            height: 950 - 900
+         },
+         ['cbca32', 'eee132', 'dedc36', 'f6f039']);
 
-   //    msleep(4000);
+      msleep(4000);
 
-   //    if (duel !== false) {
-   //       console.log('Succes')
-   //       mouseUse(robot, duel.x, duel.y);
-   //    }
+      if (duel !== false) {
+         console.log('Succes')
+         mouseUse(robot, duel.x, duel.y);
+      }
 
-   //    msleep(2000);
-   //    mouseUse(robot, 560, 0);
-   //    mouseUse(robot, 560, 0);
-
-
-   //    msleep(1000);
-   //    if (duel !== false) {
-   //       console.log('Succes')
-   //       mouseUse(robot, duel.x, duel.y);
-   //    }
+      msleep(2000);
+      mouseUse(robot, 560, 0);
+      mouseUse(robot, 560, 0);
 
 
-   // }
+      msleep(1000);
+      if (duel !== false) {
+         console.log('Succes')
+         mouseUse(robot, duel.x, duel.y);
+      }
 
-   msleep(1000);
+      msleep(1000);
 
-   startDuel(robot);
+      startDuel(robot);
+      return false;
+   }
+
+
 }
 
 function msleep(n) {
@@ -114,7 +115,8 @@ async function startDuel(robot) {
             if (player.includes(sampleColor)) {
                await drawCards(robot);
                let turn = playerTurn(robot);
-               mouseUse(robot, turn.x, turn.y);
+               summonMonster(robot, turn);
+
                return false;
             } else if (opponents.includes(sampleColor)) {
                console.log('Opponents Turn');
@@ -154,13 +156,48 @@ function playerTurn(robot) {
    return false;
 }
 
+function summonMonster(robot, cord) {
+   mouseUse(robot, cord.x, cord.y);
+   msleep(1000);
+   const capture = {
+      x: 855,
+      y: 800,
+      width: 915 - 855,
+      height: 810 - 800
+   }
+
+   let monster = ['e28844']
+
+   let img = robot.screen.capture(capture.x, capture.y, capture.width, capture.height);
+
+   // let cordX = 876;
+   // let cordY = 806;
+
+   // let pixelColor = robot.getPixelColor(cordX, cordY);
+   // console.log(pixelColor);
+
+   for (let i = 0; i < img.width; i++) {
+      for (let j = 0; j < img.height; j++) {
+         let sampleColor = img.colorAt(i, j);
+
+         if (monster.includes(sampleColor)) {
+            let screenX = i + capture.x;
+            let screenY = j + capture.y;
+
+            mouseUse(robot, screenX, screenY);
+         }
+      }
+   }
+   return false;
+}
+
 async function drawCardAsync(robot) {
    mouseUse(robot, 560, 0);
 }
 
 async function drawCards(robot) {
-   for (let i = 0; i < 4; i++) {
-      await msleep(500);
+   for (let i = 0; i < 6; i++) {
+      await msleep(800);
       await drawCardAsync(robot);
    }
 }
