@@ -43,7 +43,6 @@ async function startBot(robot) {
   //    return false;
   // }
 
-  msleep(1000);
   startDuel(robot);
   // chechAttack(robot);
   // attackMonster(robot);
@@ -107,6 +106,7 @@ function findElement(robot, capture, colors) {
 }
 
 async function startDuel(robot) {
+   msleep(1000);
   const capture = {
     x: 1090,
     y: 50,
@@ -203,19 +203,21 @@ function summonMonster(robot, cord) {
       if (monster.includes(sampleColor)) {
         let screenX = i + capture.x;
         let screenY = j + capture.y;
-         console.log('SummonMonster')
+        console.log("SummonMonster");
         mouseUse(robot, screenX, screenY);
-        msleep(1200);
+        msleep(2500);
         clickPhase(robot);
-        msleep(1000);
+        msleep(1500);
         let endPlayer = checkTurn(robot);
+        
         if (endPlayer) {
-          msleep(1000);
+         console.log('End Turn')
+          msleep(2000);
           startDuel(robot);
         } else {
-          attackMonster(robot);
-          msleep(1000);
-          startDuel(robot);
+         console.log('Battle........................')
+          msleep(1500);
+          battle();
         }
       }
     }
@@ -287,7 +289,6 @@ function checkTurn(robot) {
   let endPhase = ["330022"];
   let battlePhase = ["003333"];
   let firstIfMatched = false;
-
   for (let i = 0; i < img.width; i++) {
     for (let j = 0; j < img.height; j++) {
       let sampleColor = img.colorAt(i, j);
@@ -299,7 +300,7 @@ function checkTurn(robot) {
         mouseUse(robot, screenX, screenY);
         console.log("ClickTurn Battle");
         firstIfMatched = true;
-        break;
+        return false;
       } else if (endPhase.includes(sampleColor)) {
         let screenX = i + capture.x;
         let screenY = j + capture.y;
@@ -348,6 +349,12 @@ async function attackMonster(robot) {
   clickPhase(robot);
   msleep(1500);
   checkTurn(robot);
+}
+
+async function battle(robot) {
+   await attackMonster(robot);
+   msleep(1000);
+   startDuel(robot);
 }
 
 module.exports = {
