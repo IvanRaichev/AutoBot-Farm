@@ -1,49 +1,56 @@
 async function startBot(robot) {
-  // while (true) {
-  //    let gate = await findElementWithRetry(robot,
-  //       {
-  //          x: 1080,
-  //          y: 432,
-  //          width: 1110 - 1080,
-  //          height: 450 - 432
-  //       },
-  //       ['54f7f7', '688552', '7f9c5c', '739855']);
+  while (true) {
+    let gate = await findElementWithRetry(
+      robot,
+      {
+        x: 1080,
+        y: 432,
+        width: 1110 - 1080,
+        height: 450 - 432,
+      },
+      ["54f7f7", "688552", "7f9c5c", "739855"]
+    );
 
-  //    if (gate !== false) {
-  //       console.log('Succes')
-  //       mouseUse(robot, gate.x, gate.y);
-  //    }
+    if (gate !== false) {
+      console.log("Succes");
+      mouseUse(robot, gate.x, gate.y);
+    }
 
-  //    let duel = await findElementWithRetry(robot,
-  //       {
-  //          x: 925,
-  //          y: 900,
-  //          width: 1000 - 920,
-  //          height: 950 - 900
-  //       },
-  //       ['cbca32', 'eee132', 'dedc36', 'f6f039']);
+    let duel = await findElementWithRetry(
+      robot,
+      {
+        x: 925,
+        y: 900,
+        width: 1000 - 920,
+        height: 950 - 900,
+      },
+      ["cbca32", "eee132", "dedc36", "f6f039"]
+    );
 
-  //    msleep(4000);
+    msleep(4000);
 
-  //    if (duel !== false) {
-  //       console.log('Succes')
-  //       mouseUse(robot, duel.x, duel.y);
-  //    }
+    if (duel !== false) {
+      console.log("Succes");
+      mouseUse(robot, duel.x, duel.y);
+    }
 
-  //    msleep(2000);
-  //    mouseUse(robot, 560, 0);
-  //    mouseUse(robot, 560, 0);
+    msleep(2000);
+    mouseUse(robot, 560, 0);
+    mouseUse(robot, 560, 0);
 
-  //    msleep(1000);
-  //    if (duel !== false) {
-  //       console.log('Succes')
-  //       mouseUse(robot, duel.x, duel.y);
-  //    }
+    msleep(1000);
+    if (duel !== false) {
+      console.log("Succes");
+      mouseUse(robot, duel.x, duel.y);
+    }
 
-  //    return false;
-  // }
+    await startDuel(robot);
 
-  await startDuel(robot);
+    return false;
+  }
+
+  //  checkWin(robot);
+  // await startDuel(robot);
   // chechAttack(robot);
   // attackMonster(robot);
   // checkTurn(robot);
@@ -149,10 +156,10 @@ async function startDuel(robot) {
 
 async function playerTurn(robot) {
   const capture = {
-    x: 715,
-    y: 940,
-    width: 800 - 715,
-    height: 960 - 935,
+    x: 710,
+    y: 930,
+    width: 860 - 710,
+    height: 960 - 930,
   };
 
   let img = robot.screen.capture(
@@ -176,6 +183,7 @@ async function playerTurn(robot) {
         let screenY = j + capture.y;
         console.log("PlayerTurn");
         mouseUse(robot, screenX, screenY);
+        return false;
       }
     }
   }
@@ -218,10 +226,12 @@ async function summonMonster(robot) {
           console.log("End Turn");
           msleep(2000);
           await startDuel(robot);
+          return false;
         } else {
           console.log("Battle........................");
           msleep(1500);
           await battle(robot);
+          return false;
         }
       }
     }
@@ -230,12 +240,6 @@ async function summonMonster(robot) {
 }
 
 function clickPhase(robot) {
-  // let cordX = 1295;
-  // let cordY = 711;
-
-  // let pixelColor = robot.getPixelColor(cordX, cordY);
-  // console.log(pixelColor);
-
   const capture = {
     x: 1274,
     y: 705,
@@ -270,12 +274,6 @@ function clickPhase(robot) {
 }
 
 function checkTurn(robot) {
-  // let cordX = 1293;
-  // let cordY = 705;
-
-  // let pixelColor = robot.getPixelColor(cordX, cordY);
-  // console.log(pixelColor);
-
   const capture = {
     x: 1285,
     y: 700,
@@ -358,8 +356,29 @@ async function attackMonster(robot) {
 async function battle(robot) {
   await attackMonster(robot);
   msleep(1000);
+  let finishMathc = await checkWin(robot);
+  console.log(finishMathc);
   console.log("Battle End");
-  await startDuel(robot);
+  if (finishMathc) {
+    console.log("Match Finish");
+    return false;
+  } else {
+    await startDuel(robot);
+  }
+}
+
+async function checkWin(robot) {
+  msleep(500);
+  let cordX = 1324;
+  let cordY = 33;
+
+  let pixelColor = robot.getPixelColor(cordX, cordY);
+  let colorWin = ["ffffff"];
+
+  if (!colorWin.includes(pixelColor)) {
+    console.log(pixelColor);
+    return true;
+  }
 }
 
 module.exports = {
