@@ -43,7 +43,7 @@ async function startBot(robot) {
   //    return false;
   // }
 
-  startDuel(robot);
+  await startDuel(robot);
   // chechAttack(robot);
   // attackMonster(robot);
   // checkTurn(robot);
@@ -65,10 +65,14 @@ async function drawCardAsync(robot) {
 }
 
 async function drawCards(robot) {
-  for (let i = 0; i < 6; i++) {
+  let index = 0;
+  for (index; index < 6; index++) {
+    console.log("Draw..... " + index);
     await msleep(800);
     await drawCardAsync(robot);
   }
+
+  return Promise.resolve();
 }
 
 async function findElementWithRetry(robot, capture, colors) {
@@ -106,7 +110,7 @@ function findElement(robot, capture, colors) {
 }
 
 async function startDuel(robot) {
-   msleep(1000);
+  msleep(1000);
   const capture = {
     x: 1090,
     y: 50,
@@ -132,8 +136,9 @@ async function startDuel(robot) {
         if (player.includes(sampleColor)) {
           console.log("StartDuel");
           await drawCards(robot);
-          let turn = playerTurn(robot);
-          summonMonster(robot, turn);
+          await playerTurn(robot);
+          msleep(500);
+          await summonMonster(robot);
           return false;
         } else if (opponents.includes(sampleColor)) {
         }
@@ -142,7 +147,7 @@ async function startDuel(robot) {
   }
 }
 
-function playerTurn(robot) {
+async function playerTurn(robot) {
   const capture = {
     x: 715,
     y: 940,
@@ -170,15 +175,14 @@ function playerTurn(robot) {
         let screenX = i + capture.x;
         let screenY = j + capture.y;
         console.log("PlayerTurn");
-        return { x: screenX, y: screenY };
+        mouseUse(robot, screenX, screenY);
       }
     }
   }
   return false;
 }
 
-function summonMonster(robot, cord) {
-  mouseUse(robot, cord.x, cord.y);
+async function summonMonster(robot) {
   msleep(1000);
   const capture = {
     x: 855,
@@ -209,15 +213,15 @@ function summonMonster(robot, cord) {
         clickPhase(robot);
         msleep(1500);
         let endPlayer = checkTurn(robot);
-        
+
         if (endPlayer) {
-         console.log('End Turn')
+          console.log("End Turn");
           msleep(2000);
-          startDuel(robot);
+          await startDuel(robot);
         } else {
-         console.log('Battle........................')
+          console.log("Battle........................");
           msleep(1500);
-          battle();
+          await battle(robot);
         }
       }
     }
@@ -352,9 +356,10 @@ async function attackMonster(robot) {
 }
 
 async function battle(robot) {
-   await attackMonster(robot);
-   msleep(1000);
-   startDuel(robot);
+  await attackMonster(robot);
+  msleep(1000);
+  console.log("Battle End");
+  await startDuel(robot);
 }
 
 module.exports = {
