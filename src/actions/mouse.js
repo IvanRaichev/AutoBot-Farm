@@ -1,5 +1,6 @@
 async function startBot(robot) {
   while (true) {
+    msleep(1000);
     let gate = await findElementWithRetry(
       robot,
       {
@@ -10,12 +11,10 @@ async function startBot(robot) {
       },
       ["54f7f7", "688552", "7f9c5c", "739855"]
     );
-
     if (gate !== false) {
       console.log("Succes");
       mouseUse(robot, gate.x, gate.y);
     }
-
     let duel = await findElementWithRetry(
       robot,
       {
@@ -26,18 +25,14 @@ async function startBot(robot) {
       },
       ["cbca32", "eee132", "dedc36", "f6f039"]
     );
-
     msleep(4000);
-
     if (duel !== false) {
       console.log("Succes");
       mouseUse(robot, duel.x, duel.y);
     }
-
     msleep(2000);
     mouseUse(robot, 560, 0);
     mouseUse(robot, 560, 0);
-
     msleep(1000);
     if (duel !== false) {
       console.log("Succes");
@@ -45,17 +40,7 @@ async function startBot(robot) {
     }
 
     await startDuel(robot);
-
-    return false;
   }
-
-  //  checkWin(robot);
-  // await startDuel(robot);
-  // chechAttack(robot);
-  // attackMonster(robot);
-  // checkTurn(robot);
-  // clickPhase(robot);
-  // startDuel(robot);
 }
 
 function msleep(n) {
@@ -357,10 +342,10 @@ async function battle(robot) {
   await attackMonster(robot);
   msleep(1000);
   let finishMathc = await checkWin(robot);
-  console.log(finishMathc);
   console.log("Battle End");
   if (finishMathc) {
     console.log("Match Finish");
+    collectReward(robot);
     return false;
   } else {
     await startDuel(robot);
@@ -376,8 +361,21 @@ async function checkWin(robot) {
   let colorWin = ["ffffff"];
 
   if (!colorWin.includes(pixelColor)) {
-    console.log(pixelColor);
     return true;
+  }
+}
+
+function collectReward(robot) {
+  msleep(1000);
+  let cordX = 978;
+  let cordY = 996;
+  let i = 0;
+
+  while (i < 25) {
+    console.log("Click " + i);
+    msleep(500);
+    mouseUse(robot, cordX, cordY);
+    ++i;
   }
 }
 
