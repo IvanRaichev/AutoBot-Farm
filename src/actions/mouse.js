@@ -63,7 +63,7 @@ async function drawCards(robot) {
     await msleep(800);
     await drawCardAsync(robot);
   }
-
+  console.log("Finish Draw");
   return Promise.resolve();
 }
 
@@ -154,9 +154,6 @@ async function playerTurn(robot) {
     capture.height
   );
 
-  // let cordX = 721;
-  // let cordY = 953;
-
   let cardChouse = ["42455a"];
 
   for (let i = 0; i < img.width; i++) {
@@ -172,6 +169,7 @@ async function playerTurn(robot) {
       }
     }
   }
+  console.log("Check Turn Enabled");
   return false;
 }
 
