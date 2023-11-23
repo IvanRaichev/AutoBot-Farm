@@ -7,7 +7,6 @@ function waitForKeypress(key) {
     console.log(`You pressed ${key}. Program will continue.`);
   });
 
-  // Ждем завершения программы
   process.stdin.resume();
 }
 
