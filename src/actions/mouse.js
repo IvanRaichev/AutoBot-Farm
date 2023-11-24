@@ -2,32 +2,21 @@ async function startBot(robot) {
   while (true) {
     msleep(1000);
 
-    // Check for gate
-    let gateCoordinates = {
-      x: 1080,
-      y: 432,
-      width: 1110 - 1080,
-      height: 450 - 432,
-    };
-    let gate = await findElementWithRetry(robot, gateCoordinates, ["54f7f7", "688552", "7f9c5c", "739855"]);
+    await checkAndUseGate(robot);
 
-    if (gate !== false) {
-      console.log("Success - Found Gate");
-      mouseUse(robot, gate.x, gate.y);
-    }
-    else{
-
-    }
-
-    // Check for duel
     let duelCoordinates = {
       x: 925,
       y: 900,
       width: 1000 - 920,
       height: 950 - 900,
     };
-    let duel = await findElementWithRetry(robot, duelCoordinates, ["cbca32", "eee132", "dedc36", "f6f039"]);
-    
+    let duel = await findElementWithRetry(robot, duelCoordinates, [
+      "cbca32",
+      "eee132",
+      "dedc36",
+      "f6f039",
+    ]);
+
     msleep(4000);
 
     if (duel !== false) {
@@ -37,12 +26,10 @@ async function startBot(robot) {
 
     msleep(2000);
 
-    // Perform some actions
     mouseUse(robot, 560, 0);
     mouseUse(robot, 560, 0);
     msleep(1000);
 
-    // Repeat duel action
     if (duel !== false) {
       console.log("Success - Found Duel Again");
       mouseUse(robot, duel.x, duel.y);
@@ -60,6 +47,125 @@ function msleep(n) {
 function mouseUse(robot, x, y) {
   robot.moveMouse(x, y);
   robot.mouseClick();
+}
+
+function findElement(robot, capture, colors) {
+  const img = robot.screen.capture(
+    capture.x,
+    capture.y,
+    capture.width,
+    capture.height
+  );
+
+  for (let i = 0; i < img.width; i++) {
+    for (let j = 0; j < img.height; j++) {
+      let sampleColor = img.colorAt(i, j);
+
+      if (colors.includes(sampleColor)) {
+        let screenX = i + capture.x;
+        let screenY = j + capture.y;
+
+        return { x: screenX, y: screenY };
+      }
+    }
+  }
+
+  return false;
+}
+
+
+function clickPhase(robot) {
+  const capture = {
+    x: 1274,
+    y: 705,
+    width: 1305 - 1274,
+    height: 720 - 705,
+  };
+
+  let img = robot.screen.capture(
+    capture.x,
+    capture.y,
+    capture.width,
+    capture.height
+  );
+
+  let colorPhase = ["88eeff"];
+
+  for (let i = 0; i < img.width; i++) {
+    for (let j = 0; j < img.height; j++) {
+      let sampleColor = img.colorAt(i, j);
+
+      if (colorPhase.includes(sampleColor)) {
+        let screenX = i + capture.x;
+        let screenY = j + capture.y;
+
+        mouseUse(robot, screenX, screenY);
+        console.log("ClickPhase");
+        return false;
+      }
+    }
+  }
+  return false;
+}
+
+function checkTurn(robot) {
+  const capture = {
+    x: 1285,
+    y: 700,
+    width: 1300 - 1285,
+    height: 710 - 700,
+  };
+
+  let img = robot.screen.capture(
+    capture.x,
+    capture.y,
+    capture.width,
+    capture.height
+  );
+
+  let endPhase = ["330022"];
+  let battlePhase = ["003333"];
+  let firstIfMatched = false;
+  for (let i = 0; i < img.width; i++) {
+    for (let j = 0; j < img.height; j++) {
+      let sampleColor = img.colorAt(i, j);
+
+      if (battlePhase.includes(sampleColor)) {
+        let screenX = i + capture.x;
+        let screenY = j + capture.y;
+
+        mouseUse(robot, screenX, screenY);
+        console.log("ClickTurn Battle");
+        firstIfMatched = true;
+        return false;
+      } else if (endPhase.includes(sampleColor)) {
+        let screenX = i + capture.x;
+        let screenY = j + capture.y;
+        mouseUse(robot, screenX, screenY);
+        let endTurn = true;
+        console.log("ClickTurn End");
+        return endTurn;
+      }
+    }
+    if (firstIfMatched) {
+      break;
+    }
+  }
+  return false;
+}
+
+function collectReward(robot) {
+  msleep(1000);
+  let cordX = 978;
+  let cordY = 996;
+  let i = 0;
+
+  while (i < 30) {
+    console.log("Click " + i);
+    msleep(500);
+    mouseUse(robot, cordX, cordY);
+    ++i;
+  }
 }
 
 async function drawCardAsync(robot) {
@@ -87,28 +193,86 @@ async function findElementWithRetry(robot, capture, colors) {
   return element;
 }
 
-function findElement(robot, capture, colors) {
-  const img = robot.screen.capture(
-    capture.x,
-    capture.y,
-    capture.width,
-    capture.height
-  );
+async function checkAndUseGate(robot) {
+  let gateCoordinates = {
+    x: 1080,
+    y: 432,
+    width: 1110 - 1080,
+    height: 450 - 432,
+  };
 
-  for (let i = 0; i < img.width; i++) {
-    for (let j = 0; j < img.height; j++) {
-      let sampleColor = img.colorAt(i, j);
+  let gate = await findElementWithRetry(robot, gateCoordinates, ["54f7f7", "688552", "7f9c5c", "739855"]);
 
-      if (colors.includes(sampleColor)) {
-        let screenX = i + capture.x;
-        let screenY = j + capture.y;
-
-        return { x: screenX, y: screenY };
-      }
-    }
+  if (gate !== false) {
+    console.log("Success - Found Gate");
+    mouseUse(robot, gate.x, gate.y);
+  } else {
+    console.log("Waiting....");
+    mouseUse(robot, 681, 1040);
+    await checkAndUseGate(robot); // Повторный вызов функции для проверки ворот
   }
+}
 
-  return false;
+
+async function chechAttack(robot) {
+  return new Promise((resolve) => {
+    let cordX = 955;
+    let cordY = 773;
+    let attackColor = ["fff7bf"];
+
+    let pixelColor = robot.getPixelColor(cordX, cordY);
+    if (attackColor.includes(pixelColor)) {
+      mouseUse(robot, cordX, cordY);
+      msleep(2000);
+      console.log("Check Attack");
+      resolve();
+    } else {
+      resolve();
+    }
+  });
+}
+
+async function attackMonster(robot) {
+  let cordX = [830, 960, 1080];
+  let cordY = 650;
+
+  for (let elem of cordX) {
+    await mouseUse(robot, elem, cordY);
+    msleep(800);
+    await chechAttack(robot);
+    console.log("Attack Moster");
+  }
+  msleep(1500);
+  clickPhase(robot);
+  msleep(1500);
+  checkTurn(robot);
+}
+
+async function battle(robot) {
+  await attackMonster(robot);
+  msleep(1000);
+  let finishMathc = await checkWin(robot);
+  console.log("Battle End");
+  if (finishMathc) {
+    console.log("Match Finish");
+    collectReward(robot);
+    return false;
+  } else {
+    await startDuel(robot);
+  }
+}
+
+async function checkWin(robot) {
+  msleep(500);
+  let cordX = 1324;
+  let cordY = 33;
+
+  let pixelColor = robot.getPixelColor(cordX, cordY);
+  let colorWin = ["ffffff"];
+
+  if (!colorWin.includes(pixelColor)) {
+    return true;
+  }
 }
 
 async function startDuel(robot) {
@@ -231,163 +395,6 @@ async function summonMonster(robot) {
   }
   return false;
 }
-
-function clickPhase(robot) {
-  const capture = {
-    x: 1274,
-    y: 705,
-    width: 1305 - 1274,
-    height: 720 - 705,
-  };
-
-  let img = robot.screen.capture(
-    capture.x,
-    capture.y,
-    capture.width,
-    capture.height
-  );
-
-  let colorPhase = ["88eeff"];
-
-  for (let i = 0; i < img.width; i++) {
-    for (let j = 0; j < img.height; j++) {
-      let sampleColor = img.colorAt(i, j);
-
-      if (colorPhase.includes(sampleColor)) {
-        let screenX = i + capture.x;
-        let screenY = j + capture.y;
-
-        mouseUse(robot, screenX, screenY);
-        console.log("ClickPhase");
-        return false;
-      }
-    }
-  }
-  return false;
-}
-
-function checkTurn(robot) {
-  const capture = {
-    x: 1285,
-    y: 700,
-    width: 1300 - 1285,
-    height: 710 - 700,
-  };
-
-  let img = robot.screen.capture(
-    capture.x,
-    capture.y,
-    capture.width,
-    capture.height
-  );
-
-  let endPhase = ["330022"];
-  let battlePhase = ["003333"];
-  let firstIfMatched = false;
-  for (let i = 0; i < img.width; i++) {
-    for (let j = 0; j < img.height; j++) {
-      let sampleColor = img.colorAt(i, j);
-
-      if (battlePhase.includes(sampleColor)) {
-        let screenX = i + capture.x;
-        let screenY = j + capture.y;
-
-        mouseUse(robot, screenX, screenY);
-        console.log("ClickTurn Battle");
-        firstIfMatched = true;
-        return false;
-      } else if (endPhase.includes(sampleColor)) {
-        let screenX = i + capture.x;
-        let screenY = j + capture.y;
-        mouseUse(robot, screenX, screenY);
-        let endTurn = true;
-        console.log("ClickTurn End");
-        return endTurn;
-      }
-    }
-    if (firstIfMatched) {
-      break;
-    }
-  }
-  return false;
-}
-
-async function chechAttack(robot) {
-  return new Promise((resolve) => {
-    let cordX = 955;
-    let cordY = 773;
-    let attackColor = ["fff7bf"];
-
-    let pixelColor = robot.getPixelColor(cordX, cordY);
-    if (attackColor.includes(pixelColor)) {
-      mouseUse(robot, cordX, cordY);
-      msleep(2000);
-      console.log("Check Attack");
-      resolve();
-    } else {
-      resolve();
-    }
-  });
-}
-
-async function attackMonster(robot) {
-  let cordX = [830, 960, 1080];
-  let cordY = 650;
-
-  for (let elem of cordX) {
-    await mouseUse(robot, elem, cordY);
-    msleep(800);
-    await chechAttack(robot);
-    console.log("Attack Moster");
-  }
-  msleep(1500);
-  clickPhase(robot);
-  msleep(1500);
-  checkTurn(robot);
-}
-
-async function battle(robot) {
-  await attackMonster(robot);
-  msleep(1000);
-  let finishMathc = await checkWin(robot);
-  console.log("Battle End");
-  if (finishMathc) {
-    console.log("Match Finish");
-    collectReward(robot);
-    return false;
-  } else {
-    await startDuel(robot);
-  }
-}
-
-async function checkWin(robot) {
-  msleep(500);
-  let cordX = 1324;
-  let cordY = 33;
-
-  let pixelColor = robot.getPixelColor(cordX, cordY);
-  let colorWin = ["ffffff"];
-
-  if (!colorWin.includes(pixelColor)) {
-    return true;
-  }
-}
-
-function collectReward(robot) {
-  msleep(1000);
-  let cordX = 978;
-  let cordY = 996;
-  let i = 0;
-
-  while (i < 30) {
-    console.log("Click " + i);
-    msleep(500);
-    mouseUse(robot, cordX, cordY);
-    ++i;
-  }
-}
-
-
 
 module.exports = {
   startBot,
