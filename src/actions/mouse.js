@@ -1,44 +1,54 @@
 async function startBot(robot) {
   while (true) {
     msleep(1000);
-    let gate = await findElementWithRetry(
-      robot,
-      {
-        x: 1080,
-        y: 432,
-        width: 1110 - 1080,
-        height: 450 - 432,
-      },
-      ["54f7f7", "688552", "7f9c5c", "739855"]
-    );
+
+    // Check for gate
+    let gateCoordinates = {
+      x: 1080,
+      y: 432,
+      width: 1110 - 1080,
+      height: 450 - 432,
+    };
+    let gate = await findElementWithRetry(robot, gateCoordinates, ["54f7f7", "688552", "7f9c5c", "739855"]);
+
     if (gate !== false) {
-      console.log("Succes");
+      console.log("Success - Found Gate");
       mouseUse(robot, gate.x, gate.y);
     }
-    let duel = await findElementWithRetry(
-      robot,
-      {
-        x: 925,
-        y: 900,
-        width: 1000 - 920,
-        height: 950 - 900,
-      },
-      ["cbca32", "eee132", "dedc36", "f6f039"]
-    );
-    msleep(4000);
-    if (duel !== false) {
-      console.log("Succes");
-      mouseUse(robot, duel.x, duel.y);
+    else{
+
     }
-    msleep(2000);
-    mouseUse(robot, 560, 0);
-    mouseUse(robot, 560, 0);
-    msleep(1000);
+
+    // Check for duel
+    let duelCoordinates = {
+      x: 925,
+      y: 900,
+      width: 1000 - 920,
+      height: 950 - 900,
+    };
+    let duel = await findElementWithRetry(robot, duelCoordinates, ["cbca32", "eee132", "dedc36", "f6f039"]);
+    
+    msleep(4000);
+
     if (duel !== false) {
-      console.log("Succes");
+      console.log("Success - Found Duel");
       mouseUse(robot, duel.x, duel.y);
     }
 
+    msleep(2000);
+
+    // Perform some actions
+    mouseUse(robot, 560, 0);
+    mouseUse(robot, 560, 0);
+    msleep(1000);
+
+    // Repeat duel action
+    if (duel !== false) {
+      console.log("Success - Found Duel Again");
+      mouseUse(robot, duel.x, duel.y);
+    }
+
+    // Continue the loop
     await startDuel(robot);
   }
 }
@@ -369,13 +379,15 @@ function collectReward(robot) {
   let cordY = 996;
   let i = 0;
 
-  while (i < 25) {
+  while (i < 30) {
     console.log("Click " + i);
     msleep(500);
     mouseUse(robot, cordX, cordY);
     ++i;
   }
 }
+
+
 
 module.exports = {
   startBot,
