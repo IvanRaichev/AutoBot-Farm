@@ -4,13 +4,15 @@
   "description": "",
   "main": "src/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-packager ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "electron": "^20.3.12",
+    "electron-packager": "^17.1.2",
     "robotjs": "^0.6.0"
   },
   "devDependencies": {
