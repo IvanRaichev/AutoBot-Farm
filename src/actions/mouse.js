@@ -49,18 +49,45 @@ async function startAutoDuel(robot) {
       height: 803 - 560,
     };
 
-    let color = ["3fb9c4", "d0f7f8"];
+    let example ={
+      x: 910,
+      y: 610,
+      width: 981 - 910,
+      height: 680 - 610,
+    }
+
+    let color = ["3fb9c4", "d0f7f8",'4dadab', 'efffff','c74444'];
 
     let auto = await findElementWithRetry(robot, area, color);
 
+    // let cordX = 1067;
+    // let cordY = 648;
+
+    // let pixelColor = robot.getPixelColor(cordX, cordY);
+    // console.log(pixelColor);
     if (auto !== false) {
       console.log("Success - Found Auto");
-      mouseUse(robot, auto.x - 4, auto.y);
+      mouseUse(robot, auto.x, auto.y);
     }
     msleep(2000);
 
     mouseUse(robot, 560, 0);
     mouseUse(robot, 560, 0);
+
+    msleep(1000);
+
+    mouseUse(robot, 1153, 943);
+    msleep(15000);
+    let finishMathc = false;
+
+    while(!finishMathc){
+      finishMathc = await checkWin(robot);
+      if (finishMathc) {
+        console.log("Match Finish");
+        collectReward(robot);
+      }
+      console.log('Congratulations')
+    }
     return false;
   }
 }
@@ -92,6 +119,7 @@ function findElement(robot, capture, colors) {
 
         return { x: screenX, y: screenY };
       }
+      // console.log(sampleColor);
     }
   }
 
@@ -184,7 +212,7 @@ function collectReward(robot) {
   let cordY = 996;
   let i = 0;
 
-  while (i < 30) {
+  while (i < 25) {
     console.log("Click " + i);
     msleep(500);
     mouseUse(robot, cordX, cordY);
@@ -296,7 +324,8 @@ async function checkWin(robot) {
   let cordY = 33;
 
   let pixelColor = robot.getPixelColor(cordX, cordY);
-  let colorWin = ["ffffff"];
+  console.log(pixelColor);
+  let colorWin = ["ffffff","808080"];
 
   if (!colorWin.includes(pixelColor)) {
     return true;
