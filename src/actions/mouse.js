@@ -35,8 +35,33 @@ async function startBot(robot) {
       mouseUse(robot, duel.x, duel.y);
     }
 
-    // Continue the loop
     await startDuel(robot);
+  }
+}
+
+async function startAutoDuel(robot) {
+  while (true) {
+    msleep(1000);
+    let area = {
+      x: 724,
+      y: 560,
+      width: 1179 - 724,
+      height: 803 - 560,
+    };
+
+    let color = ["3fb9c4", "d0f7f8"];
+
+    let auto = await findElementWithRetry(robot, area, color);
+
+    if (auto !== false) {
+      console.log("Success - Found Auto");
+      mouseUse(robot, auto.x - 4, auto.y);
+    }
+    msleep(2000);
+
+    mouseUse(robot, 560, 0);
+    mouseUse(robot, 560, 0);
+    return false;
   }
 }
 
@@ -72,7 +97,6 @@ function findElement(robot, capture, colors) {
 
   return false;
 }
-
 
 function clickPhase(robot) {
   const capture = {
@@ -201,7 +225,12 @@ async function checkAndUseGate(robot) {
     height: 450 - 432,
   };
 
-  let gate = await findElementWithRetry(robot, gateCoordinates, ["54f7f7", "688552", "7f9c5c", "739855"]);
+  let gate = await findElementWithRetry(robot, gateCoordinates, [
+    "54f7f7",
+    "688552",
+    "7f9c5c",
+    "739855",
+  ]);
 
   if (gate !== false) {
     console.log("Success - Found Gate");
@@ -209,10 +238,9 @@ async function checkAndUseGate(robot) {
   } else {
     console.log("Waiting....");
     mouseUse(robot, 681, 1040);
-    await checkAndUseGate(robot); // Повторный вызов функции для проверки ворот
+    await checkAndUseGate(robot);
   }
 }
-
 
 async function chechAttack(robot) {
   return new Promise((resolve) => {
@@ -341,6 +369,7 @@ async function playerTurn(robot) {
         mouseUse(robot, screenX, screenY);
         return false;
       }
+      console.log(sampleColor);
     }
   }
   console.log("Check Turn Enabled");
@@ -398,4 +427,5 @@ async function summonMonster(robot) {
 
 module.exports = {
   startBot,
+  startAutoDuel,
 };

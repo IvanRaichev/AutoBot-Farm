@@ -18,6 +18,9 @@ function createWindow() {
    ipcMain.on('button-clicked', () => {
       mouseEvent.startBot(robot);
    });
+   ipcMain.on('button-clicked-auto', () => {
+      mouseEvent.startAutoDuel(robot);
+   });
 };
 
 function startRender() {
