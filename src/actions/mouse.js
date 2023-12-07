@@ -63,10 +63,13 @@ async function startAutoDuel(robot) {
       "d4f7f8",
       "d6f9fa",
       "fafefe",
-      "e4ffff",
+      "d7f2f2",
+      "d7f3f5",
+      // "e4ffff",
       "3fb9c4",
       "4dbeb8",
       "1bb7d2",
+      "7bd7dd",
       "2fc8d5",
       "22b4cd",
       "60c4c5",
@@ -96,7 +99,7 @@ async function startAutoDuel(robot) {
     // console.log(pixelColor);
     if (auto !== false) {
       console.log("Success - Found Auto");
-      mouseUse(robot, auto.x - 4, auto.y + 4);
+      mouseUse(robot, auto.x - 3, auto.y + 5);
       msleep(2000);
 
       mouseUse(robot, 560, 0);
@@ -116,6 +119,7 @@ async function startAutoDuel(robot) {
         }
       }
     } else {
+      checkTrainers(robot);
       if (target > 4) {
         target = 1;
       }
@@ -499,6 +503,23 @@ async function summonMonster(robot) {
   return false;
 }
 
+async function checkTrainers(robot) {
+ 
+  let cordX = 651;
+  let cordY = 70;
+
+  let colorTrainers = ["6666aa"];
+  let pixelColor = robot.getPixelColor(cordX, cordY);
+  if (colorTrainers.includes(pixelColor)) {
+    mouseUse(robot, cordX, cordY);
+    msleep(2500);
+    mouseUse(robot, 1070, 340);
+    msleep(2500);
+    mouseUse(robot, 1090, 600);
+    msleep(1500);
+    mouseUse(robot, 960, 620);
+  }
+}
 module.exports = {
   startBot,
   startAutoDuel,
