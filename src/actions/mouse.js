@@ -10,6 +10,8 @@ async function startBot(robot) {
       width: 1000 - 920,
       height: 950 - 900,
     };
+    msleep(4000);
+
     let duel = await findElementWithRetry(robot, duelCoordinates, [
       "cbca32",
       "eee132",
@@ -17,8 +19,7 @@ async function startBot(robot) {
       "f6f039",
     ]);
 
-    msleep(4000);
-
+    console.log(duel);
     if (duel !== false) {
       console.log("Success - Found Duel");
       mouseUse(robot, duel.x, duel.y);
@@ -40,26 +41,54 @@ async function startBot(robot) {
 }
 
 async function startAutoDuel(robot) {
+  let target = 1;
+
   while (true) {
     msleep(1000);
     let area = {
       x: 724,
       y: 560,
-      width: 1179 - 724,
+      width: 1200 - 724,
       height: 803 - 560,
     };
 
-    let example ={
-      x: 910,
-      y: 610,
-      width: 981 - 910,
-      height: 680 - 610,
-    }
+    // let example = {
+    //   x: 910,
+    //   y: 610,
+    //   width: 981 - 910,
+    //   height: 680 - 610,
+    // };
 
-    let color = ["3fb9c4", "d0f7f8",'4dadab', 'efffff','c74444'];
+    let color = [
+      "d4f7f8",
+      "d6f9fa",
+      "fafefe",
+      "e4ffff",
+      "3fb9c4",
+      "4dbeb8",
+      "1bb7d2",
+      "2fc8d5",
+      "22b4cd",
+      "60c4c5",
+      "31c4d6",
+      "6accb4",
+      "4dadab",
+      "1cb9d5",
+      "c74444",
+      "41ccd3",
+      "43d3e0",
+      "34bed0",
+      "69c5b6",
+      "49c0ba",
+      "36c9d4",
+      "70d2ca",
+      "3fc1c1",
+      "23bbd6",
+      "37c5d4",
+      "64d1c8",
+    ];
 
     let auto = await findElementWithRetry(robot, area, color);
-
     // let cordX = 1067;
     // let cordY = 648;
 
@@ -67,28 +96,45 @@ async function startAutoDuel(robot) {
     // console.log(pixelColor);
     if (auto !== false) {
       console.log("Success - Found Auto");
-      mouseUse(robot, auto.x, auto.y);
-    }
-    msleep(2000);
+      mouseUse(robot, auto.x - 4, auto.y + 4);
+      msleep(2000);
 
-    mouseUse(robot, 560, 0);
-    mouseUse(robot, 560, 0);
+      mouseUse(robot, 560, 0);
+      mouseUse(robot, 560, 0);
+      mouseUse(robot, 560, 0);
+      msleep(1000);
 
-    msleep(1000);
+      mouseUse(robot, 1153, 943);
+      msleep(15000);
+      let finishMathc = false;
 
-    mouseUse(robot, 1153, 943);
-    msleep(15000);
-    let finishMathc = false;
-
-    while(!finishMathc){
-      finishMathc = await checkWin(robot);
-      if (finishMathc) {
-        console.log("Match Finish");
-        collectReward(robot);
+      while (!finishMathc) {
+        finishMathc = await checkWin(robot);
+        if (finishMathc) {
+          console.log("Match Finish");
+          collectReward(robot);
+        }
       }
-      console.log('Congratulations')
+    } else {
+      if (target > 4) {
+        target = 1;
+      }
+
+      switch (target) {
+        case 1:
+          mouseUse(robot, 890, 1045);
+          break;
+        case 2:
+          mouseUse(robot, 1064, 1045);
+          break;
+        case 3:
+          mouseUse(robot, 1258, 1045);
+          break;
+        case 4:
+          mouseUse(robot, 697, 1045);
+      }
+      target++;
     }
-    return false;
   }
 }
 
@@ -116,10 +162,9 @@ function findElement(robot, capture, colors) {
       if (colors.includes(sampleColor)) {
         let screenX = i + capture.x;
         let screenY = j + capture.y;
-
+        console.log(sampleColor);
         return { x: screenX, y: screenY };
       }
-      // console.log(sampleColor);
     }
   }
 
@@ -240,6 +285,10 @@ async function findElementWithRetry(robot, capture, colors) {
   do {
     msleep(1000);
     element = findElement(robot, capture, colors);
+
+    if (element === false) {
+      return false;
+    }
   } while (element === false);
 
   return element;
@@ -263,10 +312,6 @@ async function checkAndUseGate(robot) {
   if (gate !== false) {
     console.log("Success - Found Gate");
     mouseUse(robot, gate.x, gate.y);
-  } else {
-    console.log("Waiting....");
-    mouseUse(robot, 681, 1040);
-    await checkAndUseGate(robot);
   }
 }
 
@@ -325,7 +370,7 @@ async function checkWin(robot) {
 
   let pixelColor = robot.getPixelColor(cordX, cordY);
   console.log(pixelColor);
-  let colorWin = ["ffffff","808080"];
+  let colorWin = ["ffffff", "808080"];
 
   if (!colorWin.includes(pixelColor)) {
     return true;
