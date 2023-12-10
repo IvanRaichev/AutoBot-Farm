@@ -18,8 +18,13 @@ function createWindow() {
    ipcMain.on('button-clicked', () => {
       mouseEvent.startBot(robot);
    });
+
    ipcMain.on('button-clicked-auto', () => {
       mouseEvent.startAutoDuel(robot);
+   });
+
+   ipcMain.on('button-clicked-pvp', () => {
+      mouseEvent.startAutoPvP(robot);
    });
 };
 

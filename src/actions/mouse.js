@@ -19,7 +19,6 @@ async function startBot(robot) {
       "f6f039",
     ]);
 
-    console.log(duel);
     if (duel !== false) {
       console.log("Success - Found Duel");
       mouseUse(robot, duel.x, duel.y);
@@ -36,7 +35,7 @@ async function startBot(robot) {
       mouseUse(robot, duel.x, duel.y);
     }
 
-    await startDuel(robot);
+    await startDuel(robot,true);
   }
 }
 
@@ -65,6 +64,7 @@ async function startAutoDuel(robot) {
       "fafefe",
       "d7f2f2",
       "d7f3f5",
+      "1fc6da",
       // "e4ffff",
       "3fb9c4",
       "4dbeb8",
@@ -142,6 +142,39 @@ async function startAutoDuel(robot) {
   }
 }
 
+async function startAutoPvP(robot) {
+  msleep(1000);
+  mouseUse(robot, 890, 1040);
+  msleep(500);
+  mouseUse(robot, 890, 1040);
+  msleep(2500);
+
+  let PvPCoordinates = {
+    x: 640,
+    y: 130,
+    width: 830 - 640,
+    height: 410 - 130,
+  };
+
+  let color = ["27ffd4"];
+
+  let pvp = await findElementWithRetry(robot, PvPCoordinates, color);
+
+  if (pvp !== false) {
+    console.log("Success - Found PvP");
+    mouseUse(robot, pvp.x, pvp.y);
+  }
+
+  while (true) {
+    msleep(2000);
+    mouseUse(robot, 964, 550);
+    msleep(2000);
+
+    startDuel(robot);
+
+  }
+}
+
 function msleep(n) {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, n);
 }
@@ -166,7 +199,6 @@ function findElement(robot, capture, colors) {
       if (colors.includes(sampleColor)) {
         let screenX = i + capture.x;
         let screenY = j + capture.y;
-        console.log(sampleColor);
         return { x: screenX, y: screenY };
       }
     }
@@ -261,7 +293,7 @@ function collectReward(robot) {
   let cordY = 996;
   let i = 0;
 
-  while (i < 25) {
+  while (i < 27) {
     console.log("Click " + i);
     msleep(500);
     mouseUse(robot, cordX, cordY);
@@ -363,7 +395,7 @@ async function battle(robot) {
     collectReward(robot);
     return false;
   } else {
-    await startDuel(robot);
+    await startDuel(robot,true);
   }
 }
 
@@ -381,7 +413,7 @@ async function checkWin(robot) {
   }
 }
 
-async function startDuel(robot) {
+async function startDuel(robot, configurate = false) {
   msleep(1000);
   const capture = {
     x: 1090,
@@ -410,7 +442,11 @@ async function startDuel(robot) {
           await drawCards(robot);
           await playerTurn(robot);
           msleep(500);
-          await summonMonster(robot);
+          if(configurate){
+            await summonMonster(robot);
+            return false;
+          }
+          console.log('configurate = ' + configurate);
           return false;
         } else if (opponents.includes(sampleColor)) {
         }
@@ -447,7 +483,6 @@ async function playerTurn(robot) {
         mouseUse(robot, screenX, screenY);
         return false;
       }
-      console.log(sampleColor);
     }
   }
   console.log("Check Turn Enabled");
@@ -489,7 +524,7 @@ async function summonMonster(robot) {
         if (endPlayer) {
           console.log("End Turn");
           msleep(2000);
-          await startDuel(robot);
+          await startDuel(robot,true);
           return false;
         } else {
           console.log("Battle........................");
@@ -504,7 +539,6 @@ async function summonMonster(robot) {
 }
 
 async function checkTrainers(robot) {
- 
   let cordX = 651;
   let cordY = 70;
 
@@ -523,4 +557,5 @@ async function checkTrainers(robot) {
 module.exports = {
   startBot,
   startAutoDuel,
+  startAutoPvP,
 };
