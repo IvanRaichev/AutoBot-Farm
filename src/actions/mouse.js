@@ -35,7 +35,7 @@ async function startBot(robot) {
       mouseUse(robot, duel.x, duel.y);
     }
 
-    await startDuel(robot,true);
+    await startDuel(robot, true);
   }
 }
 
@@ -170,8 +170,8 @@ async function startAutoPvP(robot) {
     mouseUse(robot, 964, 550);
     msleep(2000);
 
-    startDuel(robot);
-
+    await startDuel(robot);
+    return false;
   }
 }
 
@@ -395,7 +395,7 @@ async function battle(robot) {
     collectReward(robot);
     return false;
   } else {
-    await startDuel(robot,true);
+    await startDuel(robot, true);
   }
 }
 
@@ -442,13 +442,18 @@ async function startDuel(robot, configurate = false) {
           await drawCards(robot);
           await playerTurn(robot);
           msleep(500);
-          if(configurate){
+          if (configurate) {
             await summonMonster(robot);
             return false;
+          } else {
+            msleep(500);
+            await autoPvP(robot);
+            await startDuel(robot);
+            return false;
           }
-          console.log('configurate = ' + configurate);
-          return false;
         } else if (opponents.includes(sampleColor)) {
+          msleep(500);
+          mouseUse(robot, 1330, 450);
         }
       }
     }
@@ -524,7 +529,7 @@ async function summonMonster(robot) {
         if (endPlayer) {
           console.log("End Turn");
           msleep(2000);
-          await startDuel(robot,true);
+          await startDuel(robot, true);
           return false;
         } else {
           console.log("Battle........................");
@@ -552,6 +557,13 @@ async function checkTrainers(robot) {
     mouseUse(robot, 1090, 600);
     msleep(1500);
     mouseUse(robot, 960, 620);
+  }
+}
+
+async function autoPvP(robot){
+  for (let index = 0; index < 10; index++) {
+    msleep(500);
+    mouseUse(robot, 1310, 700);
   }
 }
 module.exports = {
