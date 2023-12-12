@@ -165,13 +165,31 @@ async function startAutoPvP(robot) {
     mouseUse(robot, pvp.x, pvp.y);
   }
 
+  let duelCoordinates = {
+    x: 926,
+    y: 536,
+    width: 994 - 926,
+    height: 560 - 536,
+  };
+
   while (true) {
     msleep(2000);
-    mouseUse(robot, 964, 550);
+    let color = ["cbca32", "eee132", "dedc36", "f6f039", "e2cb2a"];
+    let duel = await findElementWithRetry(robot, duelCoordinates, color);
+
+    if (duel !== false) {
+      console.log("Success - Found Duel");
+      mouseUse(robot, duel.x, duel.y);
+    } else {
+      msleep(2000);
+      mouseUse(robot, 960, 758);
+      msleep(1000);
+      duel = await findElementWithRetry(robot, duelCoordinates, color);
+      mouseUse(robot, duel.x, duel.y);
+    }
     msleep(2000);
 
     await startDuel(robot);
-    return false;
   }
 }
 
@@ -293,7 +311,21 @@ function collectReward(robot) {
   let cordY = 996;
   let i = 0;
 
-  while (i < 27) {
+  while (i < 40) {
+    console.log("Click " + i);
+    msleep(500);
+    mouseUse(robot, cordX, cordY);
+    ++i;
+  }
+}
+
+function collectRewardPvP(robot) {
+  msleep(1000);
+  let cordX = 958;
+  let cordY = 957;
+  let i = 0;
+
+  while (i < 30) {
     console.log("Click " + i);
     msleep(500);
     mouseUse(robot, cordX, cordY);
@@ -448,12 +480,23 @@ async function startDuel(robot, configurate = false) {
           } else {
             msleep(500);
             await autoPvP(robot);
+            msleep(1000);
+            await discardCard(robot);
             await startDuel(robot);
             return false;
           }
         } else if (opponents.includes(sampleColor)) {
-          msleep(500);
-          mouseUse(robot, 1330, 450);
+          await autoClick(robot);
+          let finishMathc = await checkWin(robot);
+          console.log("Battle End");
+          if (finishMathc) {
+            console.log("Match Finish");
+            collectReward(robot);
+            return false;
+          } else {
+            await startDuel(robot);
+          }
+          return false;
         }
       }
     }
@@ -560,11 +603,25 @@ async function checkTrainers(robot) {
   }
 }
 
-async function autoPvP(robot){
-  for (let index = 0; index < 10; index++) {
-    msleep(500);
+async function autoPvP(robot) {
+  for (let index = 0; index < 7; index++) {
+    msleep(600);
     mouseUse(robot, 1310, 700);
   }
+}
+
+async function autoClick(robot) {
+  for (let index = 0; index < 16; index++) {
+    msleep(300);
+    mouseUse(robot, 1330, 450);
+  }
+}
+
+async function discardCard(robot) {
+  let cordX = 953;
+  let cordY = 919;
+  msleep(600);
+  mouseUse(robot, cordX, cordY);
 }
 module.exports = {
   startBot,
