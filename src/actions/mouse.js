@@ -143,27 +143,27 @@ async function startAutoDuel(robot) {
 }
 
 async function startAutoPvP(robot) {
-  msleep(1000);
-  mouseUse(robot, 890, 1040);
-  msleep(500);
-  mouseUse(robot, 890, 1040);
-  msleep(2500);
+  // msleep(1000);
+  // mouseUse(robot, 890, 1040);
+  // msleep(500);
+  // mouseUse(robot, 890, 1040);
+  // msleep(2500);
 
-  let PvPCoordinates = {
-    x: 640,
-    y: 130,
-    width: 830 - 640,
-    height: 410 - 130,
-  };
+  // let PvPCoordinates = {
+  //   x: 640,
+  //   y: 130,
+  //   width: 830 - 640,
+  //   height: 410 - 130,
+  // };
 
-  let color = ["27ffd4"];
+  // let color = ["27ffd4"];
 
-  let pvp = await findElementWithRetry(robot, PvPCoordinates, color);
+  // let pvp = await findElementWithRetry(robot, PvPCoordinates, color);
 
-  if (pvp !== false) {
-    console.log("Success - Found PvP");
-    mouseUse(robot, pvp.x, pvp.y);
-  }
+  // if (pvp !== false) {
+  //   console.log("Success - Found PvP");
+  //   mouseUse(robot, pvp.x, pvp.y);
+  // }
 
   let duelCoordinates = {
     x: 926,
@@ -486,17 +486,19 @@ async function startDuel(robot, configurate = false) {
             return false;
           }
         } else if (opponents.includes(sampleColor)) {
-          await autoClick(robot);
-          let finishMathc = await checkWin(robot);
-          console.log("Battle End");
-          if (finishMathc) {
-            console.log("Match Finish");
-            collectReward(robot);
+          if (!configurate) {
+            await autoClick(robot);
+            let finishMathc = await checkWin(robot);
+            console.log("Battle End");
+            if (finishMathc) {
+              console.log("Match Finish");
+              collectReward(robot);
+              return false;
+            } else {
+              await startDuel(robot);
+            }
             return false;
-          } else {
-            await startDuel(robot);
           }
-          return false;
         }
       }
     }
