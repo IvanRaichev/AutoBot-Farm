@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "electron": "^20.3.12",
+    "electron-localshortcut": "^3.2.1",
     "electron-packager": "^17.1.2",
     "robotjs": "^0.6.0"
   },

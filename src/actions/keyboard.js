@@ -1,13 +1,27 @@
-function waitForKeypress(key) {
-  const robot = require("robotjs");
-  console.log(`Press ${key} to continue...`);
+const localShortcut = require('electron-localshortcut');
 
-  const listener = robot.keyTap(key, "down", () => {
-    robot.removeListener("keydown", listener);
-    console.log(`You pressed ${key}. Program will continue.`);
+let mainWindow;
+
+function registerKeyboardShortcuts(mainWin, ipcMain, mouseEvent, robot) {
+  mainWindow = mainWin;
+
+  localShortcut.register(mainWindow, 'F6', () => {
+    ipcMain.emit('button-clicked', 'startBot');
   });
 
-  process.stdin.resume();
+  localShortcut.register(mainWindow, 'F5', () => {
+    ipcMain.emit('button-clicked-auto', 'startAutoDuel');
+  });
+
+  localShortcut.register(mainWindow, 'F1', () => {
+    ipcMain.emit('button-clicked-pvp', 'startAutoPvP');
+  });
+
+  mainWindow.on('closed', () => {
+    localShortcut.unregisterAll(mainWindow);
+  });
 }
 
-module.exports = waitForKeypress;
+module.exports = {
+  registerKeyboardShortcuts,
+};

@@ -1,7 +1,10 @@
 const path = require('path');
 const { app, BrowserWindow, ipcMain } = require('electron');
-const mouseEvent = require('./actions/mouse.js');
 const robot = require("robotjs");
+const mouseEvent = require('./actions/mouse.js');
+const keyboard = require('./actions/keyboard.js');
+
+
 function createWindow() {
    const win = new BrowserWindow({
       width: 700,
@@ -15,6 +18,8 @@ function createWindow() {
    win.setMenu(null);
    win.loadFile('html/index.html');
 
+   keyboard.registerKeyboardShortcuts(win, ipcMain, mouseEvent, robot);
+
    ipcMain.on('button-clicked', () => {
       mouseEvent.startBot(robot);
    });
@@ -25,6 +30,10 @@ function createWindow() {
 
    ipcMain.on('button-clicked-pvp', () => {
       mouseEvent.startAutoPvP(robot);
+   });
+
+   win.on('closed', () => {
+      localShortcut.unregisterAll(win);
    });
 };
 
@@ -46,3 +55,4 @@ function startRender() {
 
 
 startRender();
+

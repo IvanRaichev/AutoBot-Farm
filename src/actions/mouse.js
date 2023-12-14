@@ -28,6 +28,8 @@ async function startBot(robot) {
 
     mouseUse(robot, 560, 0);
     mouseUse(robot, 560, 0);
+    msleep(200);
+    mouseUse(robot, 560, 0);
     msleep(1000);
 
     if (duel !== false) {
@@ -67,6 +69,7 @@ async function startAutoDuel(robot) {
       "1fc6da",
       // "e4ffff",
       "3fb9c4",
+      "c34444",
       "4dbeb8",
       "1bb7d2",
       "7bd7dd",
@@ -510,7 +513,7 @@ async function playerTurn(robot) {
     x: 710,
     y: 930,
     width: 860 - 710,
-    height: 960 - 930,
+    height: 970 - 930,
   };
 
   let img = robot.screen.capture(
@@ -520,7 +523,7 @@ async function playerTurn(robot) {
     capture.height
   );
 
-  let cardChouse = ["42455a"];
+  let cardChouse = ["42455a","1d2040","52525c"];
 
   for (let i = 0; i < img.width; i++) {
     for (let j = 0; j < img.height; j++) {
@@ -542,10 +545,10 @@ async function playerTurn(robot) {
 async function summonMonster(robot) {
   msleep(1000);
   const capture = {
-    x: 855,
-    y: 800,
-    width: 915 - 855,
-    height: 810 - 800,
+    x: 850,
+    y: 790,
+    width: 915 - 850,
+    height: 810 - 790,
   };
 
   let monster = ["e28844"];
