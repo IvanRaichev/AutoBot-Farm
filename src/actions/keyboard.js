@@ -17,9 +17,9 @@ function registerKeyboardShortcuts(mainWin, ipcMain, mouseEvent, robot) {
     ipcMain.emit('button-clicked-pvp', 'startAutoPvP');
   });
 
-  mainWindow.on('closed', () => {
-    localShortcut.unregisterAll(mainWindow);
-  });
+  // mainWindow.on('closed', () => {
+  //   localShortcut.unregisterAll(mainWindow);
+  // });
 }
 
 module.exports = {

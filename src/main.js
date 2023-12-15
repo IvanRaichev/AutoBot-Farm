@@ -32,9 +32,9 @@ function createWindow() {
       mouseEvent.startAutoPvP(robot);
    });
 
-   win.on('closed', () => {
-      localShortcut.unregisterAll(win);
-   });
+   // win.on('closed', () => {
+   //    localShortcut.unregisterAll(win);
+   // });
 };
 
 function startRender() {
