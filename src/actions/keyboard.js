@@ -1,37 +1,44 @@
-const localShortcut = require('electron-localshortcut');
-
+const { globalShortcut } = require("electron");
+const localShortcut = require("electron-localshortcut");
+const mouseEvent = require('./mouse.js');
 let mainWindow;
-let isScriptRunning = false;
+let functionCallback;
+let isScriptRunning = false; 
 
-function registerKeyboardShortcuts(mainWin, ipcMain, mouseEvent, robot) {
+function registerKeyboardShortcuts(mainWin, ipcMain, robot) {
   mainWindow = mainWin;
 
-  localShortcut.register(mainWindow, 'F6', () => {
-    if (isScriptRunning) {
-      stopScript();
+  globalShortcut.register("F6", () => {
+    console.log("Enter F6");
+    if (!isScriptRunning) {
+      ipcMain.emit("button-clicked", "startBot");
+      isScriptRunning = true;
     } else {
-      startScript();
+      mouseEvent.stopBot();
     }
   });
 
-  localShortcut.register(mainWindow, 'F5', () => {
-    ipcMain.emit('button-clicked-auto', 'startAutoDuel');
+  globalShortcut.register("F5", () => {
+    console.log("Enter F5");
+    if (!isScriptRunning) {
+      ipcMain.emit("button-clicked-auto", "startAutoDuel");
+      isScriptRunning = true;
+    } else {
+      ipcMain.emit("button-clicked-auto", "stopAutoDuel");
+      isScriptRunning = false;
+    }
   });
 
-  localShortcut.register(mainWindow, 'F1', () => {
-    ipcMain.emit('button-clicked-pvp', 'startAutoPvP');
+  globalShortcut.register("F1", () => {
+    console.log("Enter F1");
+    if (!isScriptRunning) {
+      ipcMain.emit("button-clicked-pvp", "startAutoPvP");
+      isScriptRunning = true;
+    } else {
+      ipcMain.emit("button-clicked-pvp", "stopAutoPvP");
+      isScriptRunning = false;
+    }
   });
-
-}
-
-function startScript() {
-  isScriptRunning = true;
-  ipcMain.emit('button-clicked', 'startBot');
-}
-
-function stopScript() {
-  isScriptRunning = false;
-  // Ваш код для остановки скрипта
 }
 
 module.exports = {

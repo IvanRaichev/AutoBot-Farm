@@ -1,5 +1,10 @@
+let isBotRunning = false;
+
 async function startBot(robot) {
-  while (true) {
+
+  isBotRunning = true;
+
+  while (isBotRunning) {
     msleep(1000);
 
     await checkAndUseGate(robot);
@@ -194,6 +199,11 @@ async function startAutoPvP(robot) {
 
     await startDuel(robot);
   }
+}
+
+function stopBot(){
+  isBotRunning = false;
+  console.log('StopBot' + isBotRunning);
 }
 
 function msleep(n) {
@@ -627,9 +637,12 @@ async function discardCard(robot) {
   let cordY = 919;
   msleep(600);
   mouseUse(robot, cordX, cordY);
+
+
 }
 module.exports = {
   startBot,
   startAutoDuel,
   startAutoPvP,
+  stopBot,
 };

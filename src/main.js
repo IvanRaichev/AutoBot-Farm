@@ -1,9 +1,10 @@
 const path = require('path');
 const { app, BrowserWindow, ipcMain } = require('electron');
 const robot = require("robotjs");
-const mouseEvent = require('./actions/mouse.js');
 const keyboard = require('./actions/keyboard.js');
+const { fork } = require('child_process');
 
+let backgroundProcess;
 
 function createWindow() {
    const win = new BrowserWindow({
@@ -17,46 +18,57 @@ function createWindow() {
 
    win.setMenuBarVisibility(false);
 
-   // win.loadURL('https://localhost:3000')
    win.loadFile(path.join(__dirname, 'index.html'));
 
-   keyboard.registerKeyboardShortcuts(win, ipcMain, mouseEvent, robot);
+   keyboard.registerKeyboardShortcuts(win, ipcMain, robot);
 
    ipcMain.on('button-clicked', () => {
-      mouseEvent.startBot(robot);
+      backgroundProcess.send({ command: 'startBot' });
    });
 
    ipcMain.on('button-clicked-auto', () => {
-      mouseEvent.startAutoDuel(robot);
+      backgroundProcess.send({ command: 'startAutoDuel' });
    });
 
    ipcMain.on('button-clicked-pvp', () => {
-      mouseEvent.startAutoPvP(robot);
-   });
-
-   // win.on('closed', () => {
-   //    localShortcut.unregisterAll(win);
-   // });
-
-   win.webContents.openDevTools();
-};
-
-function startRender() {
-
-   app.whenReady().then(createWindow);
-   app.on('window-all-closed', () => {
-      if (process.platform !== 'darwin') {
-         app.quit();
-      }
-   });
-
-   app.on('activate', () => {
-      if (BrowserWindow.getAllWindows().length === 0) {
-         createWindow();
-      }
+      backgroundProcess.send({ command: 'startAutoPvP' });
    });
 }
 
+function createBackgroundProcess() {
+   backgroundProcess = fork(path.join(__dirname, 'background-process.js'));
+
+   backgroundProcess.on('message', (message) => {
+      // Обработка сообщений от дочернего процесса
+      console.log('Message from background process:', message);
+
+      if (message.status === 'completed') {
+         // Обработка завершения фоновой операции
+      }
+   });
+
+   backgroundProcess.on('close', (code) => {
+      console.log(`Background process exited with code ${code}`);
+   });
+}
+
+function startRender() {
+   app.whenReady().then(() => {
+      createWindow();
+      createBackgroundProcess();
+
+      app.on('window-all-closed', () => {
+         if (process.platform !== 'darwin') {
+            app.quit();
+         }
+      });
+
+      app.on('activate', () => {
+         if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow();
+         }
+      });
+   });
+}
 
 startRender();
-
