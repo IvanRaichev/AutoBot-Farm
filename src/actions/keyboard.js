@@ -1,12 +1,17 @@
 const localShortcut = require('electron-localshortcut');
 
 let mainWindow;
+let isScriptRunning = false;
 
 function registerKeyboardShortcuts(mainWin, ipcMain, mouseEvent, robot) {
   mainWindow = mainWin;
 
   localShortcut.register(mainWindow, 'F6', () => {
-    ipcMain.emit('button-clicked', 'startBot');
+    if (isScriptRunning) {
+      stopScript();
+    } else {
+      startScript();
+    }
   });
 
   localShortcut.register(mainWindow, 'F5', () => {
@@ -17,9 +22,16 @@ function registerKeyboardShortcuts(mainWin, ipcMain, mouseEvent, robot) {
     ipcMain.emit('button-clicked-pvp', 'startAutoPvP');
   });
 
-  // mainWindow.on('closed', () => {
-  //   localShortcut.unregisterAll(mainWindow);
-  // });
+}
+
+function startScript() {
+  isScriptRunning = true;
+  ipcMain.emit('button-clicked', 'startBot');
+}
+
+function stopScript() {
+  isScriptRunning = false;
+  // Ваш код для остановки скрипта
 }
 
 module.exports = {

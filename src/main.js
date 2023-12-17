@@ -15,8 +15,10 @@ function createWindow() {
       }
    });
 
-   win.setMenu(null);
-   win.loadFile('html/index.html');
+   win.setMenuBarVisibility(false);
+
+   // win.loadURL('https://localhost:3000')
+   win.loadFile(path.join(__dirname, 'index.html'));
 
    keyboard.registerKeyboardShortcuts(win, ipcMain, mouseEvent, robot);
 
@@ -35,6 +37,8 @@ function createWindow() {
    // win.on('closed', () => {
    //    localShortcut.unregisterAll(win);
    // });
+
+   win.webContents.openDevTools();
 };
 
 function startRender() {

@@ -1,17 +1,19 @@
-const button = document.querySelector('.btn-test');
-const buttonAuto = document.querySelector('.btn-test2');
-const buttonPvP = document.querySelector('.btn-test3');
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    const button = document.querySelector(".btn-test");
+    const buttonAuto = document.querySelector(".btn-test2");
+    const buttonPvP = document.querySelector(".btn-test3");
 
-button.addEventListener('click', () => {
-   ipcRenderer.send('button-clicked');
-});
+    button.addEventListener("click", () => {
+      ipcRenderer.send("button-clicked");
+    });
 
+    buttonAuto.addEventListener("click", () => {
+      ipcRenderer.send("button-clicked-auto");
+    });
 
-buttonAuto.addEventListener('click', () => {
-   ipcRenderer.send('button-clicked-auto');
-});
-
-
-buttonPvP.addEventListener('click', () => {
-   ipcRenderer.send('button-clicked-pvp');
+    buttonPvP.addEventListener("click", () => {
+      ipcRenderer.send("button-clicked-pvp");
+    });
+  }, 1000);
 });
