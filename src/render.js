@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const button = document.querySelector(".btn-test");
     const buttonAuto = document.querySelector(".btn-test2");
     const buttonPvP = document.querySelector(".btn-test3");
-
+    const stopFucntion = document.querySelector(".stop-function")
+    
     button.addEventListener("click", () => {
       ipcRenderer.send("button-clicked");
     });
@@ -15,5 +16,10 @@ document.addEventListener("DOMContentLoaded", () => {
     buttonPvP.addEventListener("click", () => {
       ipcRenderer.send("button-clicked-pvp");
     });
+
+    stopFucntion.addEventListener("click",()=>{
+      ipcRenderer.send("stop-function");
+    })
+
   }, 1000);
 });

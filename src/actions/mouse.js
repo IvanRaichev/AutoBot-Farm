@@ -1,11 +1,15 @@
-let isBotRunning = false;
+let isBotRunning = false; 
 
 async function startBot(robot) {
 
-  isBotRunning = true;
+  // if (botController.stopBotSignal) {
+  //   console.log('startBot is already running. Ignoring the command.');
+  //   return;
+  // }
 
-  while (isBotRunning) {
-    msleep(1000);
+    msleep(2000);
+
+
 
     await checkAndUseGate(robot);
 
@@ -43,12 +47,13 @@ async function startBot(robot) {
     }
 
     await startDuel(robot, true);
-  }
+
+
 }
 
 async function startAutoDuel(robot) {
-  let target = 1;
 
+  let target = 1;
   while (true) {
     msleep(1000);
     let area = {
@@ -201,10 +206,11 @@ async function startAutoPvP(robot) {
   }
 }
 
-function stopBot(){
-  isBotRunning = false;
-  console.log('StopBot' + isBotRunning);
+function stopBot(value) {
+  const flag = value;
+  console.log(flag);
 }
+
 
 function msleep(n) {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, n);
@@ -325,7 +331,6 @@ function collectReward(robot) {
   let i = 0;
 
   while (i < 40) {
-    console.log("Click " + i);
     msleep(500);
     mouseUse(robot, cordX, cordY);
     ++i;
@@ -640,6 +645,8 @@ async function discardCard(robot) {
 
 
 }
+
+
 module.exports = {
   startBot,
   startAutoDuel,

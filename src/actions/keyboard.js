@@ -1,46 +1,61 @@
-const { globalShortcut } = require("electron");
-const localShortcut = require("electron-localshortcut");
-const mouseEvent = require('./mouse.js');
-let mainWindow;
+const { globalShortcut, ipcMain } = require("electron");
+const mouseEvent = require("./mouse.js");
+const backgroundProcess = require("../background-process.js");
+
 let functionCallback;
-let isScriptRunning = false; 
+let botController = { stopBotSignal: false, isBotRunning: true };
+let stopBotFlag = false;
 
-function registerKeyboardShortcuts(mainWin, ipcMain, robot) {
-  mainWindow = mainWin;
-
-  globalShortcut.register("F6", () => {
-    console.log("Enter F6");
-    if (!isScriptRunning) {
-      ipcMain.emit("button-clicked", "startBot");
-      isScriptRunning = true;
+function registerHotkeyAndFunction(hotkey, func) {
+  globalShortcut.register(hotkey, () => {
+    if (functionCallback && functionCallback.hotkey === hotkey) {
+      console.log(`Stop ${hotkey}`);
+      stopFunction();
     } else {
-      mouseEvent.stopBot();
-    }
-  });
-
-  globalShortcut.register("F5", () => {
-    console.log("Enter F5");
-    if (!isScriptRunning) {
-      ipcMain.emit("button-clicked-auto", "startAutoDuel");
-      isScriptRunning = true;
-    } else {
-      ipcMain.emit("button-clicked-auto", "stopAutoDuel");
-      isScriptRunning = false;
-    }
-  });
-
-  globalShortcut.register("F1", () => {
-    console.log("Enter F1");
-    if (!isScriptRunning) {
-      ipcMain.emit("button-clicked-pvp", "startAutoPvP");
-      isScriptRunning = true;
-    } else {
-      ipcMain.emit("button-clicked-pvp", "stopAutoPvP");
-      isScriptRunning = false;
+      console.log(`Enter ${hotkey}`);
+      startFunction(hotkey,func);
     }
   });
 }
 
+function startFunction(hotkey, func) {
+  if (functionCallback) {
+    stopFunction();
+    
+    // Если предыдущая функция была остановлена, то запускаем новую
+    if (functionCallback === null) {
+      functionCallback = { hotkey, func };
+      stopBotFlag = false; // Сбрасываем флаг перед запуском новой функции
+      func();
+    }
+  }else{
+    functionCallback = { hotkey, func };
+    func();
+  }
+}
+
+function stopFunction() {
+  if (functionCallback) {
+    stopBotFlag = true;
+    console.log('Function stop: ' + !stopBotFlag);
+    functionCallback = null;
+  }
+}
+
+function toggleStopBotSignal() {
+  let res = { stopBotSignal: false, isBotRunning: true };
+  res.stopBotSignal = !botController.stopBotSignal;
+  res.isBotRunning = !botController.isBotRunning;
+  console.log(`Toggle stopBotSignal to ${res.isBotRunning}`);
+}
+
+function getBotController() {
+  return botController; // Просто возвращаем объект botController
+}
+
 module.exports = {
-  registerKeyboardShortcuts,
+  registerHotkeyAndFunction,
+  stopFunction,
+  getBotController,
+  getStopBotFlag: () => stopBotFlag
 };
