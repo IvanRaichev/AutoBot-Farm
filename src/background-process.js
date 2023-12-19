@@ -9,16 +9,12 @@ process.on("message", async (message) => {
     isFunctionRunning = true;
 
     if (message.command === "startBot") {
-      console.log(!keyboard.getStopBotFlag());
-      while (!keyboard.getStopBotFlag()) {
         await mouseEvent.startBot(robot);
-      }
     } else if (message.command === "startAutoDuel") {
       await mouseEvent.startAutoDuel(robot);
     } else if (message.command === "startAutoPvP") {
       await mouseEvent.startAutoPvP(robot);
     } else if (message.command === "stopBot") {
-      console.log(message.elementValue);
       mouseEvent.stopBot(message.elementValue);
     }
 

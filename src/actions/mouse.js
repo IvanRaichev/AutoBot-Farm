@@ -206,11 +206,6 @@ async function startAutoPvP(robot) {
   }
 }
 
-function stopBot(value) {
-  const flag = value;
-  console.log(flag);
-}
-
 
 function msleep(n) {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, n);
@@ -651,5 +646,4 @@ module.exports = {
   startBot,
   startAutoDuel,
   startAutoPvP,
-  stopBot,
 };
