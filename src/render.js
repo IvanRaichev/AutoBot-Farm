@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const button = document.querySelector(".btn-test");
     const buttonAuto = document.querySelector(".btn-test2");
     const buttonPvP = document.querySelector(".btn-test3");
-    const stopFunction = document.querySelector(".stop-function");
+    const stopFlagElement = document.querySelector('.stop-flag');
     let isFlagActive = true;
 
     button.addEventListener("click", () => {
@@ -19,10 +19,15 @@ document.addEventListener("DOMContentLoaded", () => {
       api.send("button-clicked-pvp");
     });
 
-    stopFunction.addEventListener("click", () => {
-      const info = document.querySelector(".stop-flag");
-      isFlagActive = !isFlagActive; 
-      info.innerHTML = isFlagActive.toString(); 
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'F2') {
+        const currentValue = stopFlagElement.textContent.trim();
+        api.send('toggle-stop-flag', currentValue);
+      }
+    });
+
+    api.on('update-stop-flag', (event, newValue) => {
+      stopFlagElement.textContent = newValue;
     });
   }, 1000);
 });

@@ -5,11 +5,7 @@ process.on("message", async (message) => {
 
   const { command, invertedValue } = message;
 
-  if (message.command === "toggleFlag") {
-    console.log(invertedValue);
-    process.send({ status: "flagToggled"});
-    process.exit();
-  } else if (message.command === "startBot") {
+   if (message.command === "startBot") {
     await mouseEvent.startBot(robot);
     process.send({ status: "completed" });
     process.exit();

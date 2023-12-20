@@ -32,9 +32,6 @@ function createWindow() {
   keyboard.registerHotkeyAndFunction(ipcMain, "F1", () =>
     spawnProcess("startAutoPvP")
   );
-  keyboard.registerHotkeyAndFunction(ipcMain, "F2", () => {
-    spawnProcessFlag("toggleFlag", );
-  });
 
   win.webContents.on("dom-ready", async () => {
     try {
@@ -50,15 +47,11 @@ function createWindow() {
         spawnProcess("startAutoPvP");
       });
 
-      ipcMain.on("stop-function", (event, data) => {
-        const invertedValue = !data;
-        console.log(invertedValue);
-        event.sender.send("reply", invertedValue);
+      ipcMain.on('toggle-stop-flag', (event, currentValue) => {
+        const newValue = currentValue === 'true' ? 'false' : 'true';
+        win.webContents.send('update-stop-flag', newValue);
       });
 
-      // ipcMain.on("toggle-flag", () => {
-      //   spawnProcess("startAutoPvP");
-      // });
     } catch (error) {
       console.error("Error getting element value:", error);
     }
@@ -80,11 +73,6 @@ function createBackgroundProcessPool() {
     commandQueue.push({ command, invertedValue: undefined });
 
     if (isProcessRunning) return;
-    executeNextCommand();
-  }
-
-  function spawnProcessFlag(command, invertedValue = undefined) {
-    commandQueue.push({ command, invertedValue });
     executeNextCommand();
   }
 
@@ -116,7 +104,6 @@ function createBackgroundProcessPool() {
 
   return {
     spawnProcess,
-    spawnProcessFlag,
   };
 }
 
