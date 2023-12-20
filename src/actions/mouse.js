@@ -1,7 +1,7 @@
 let isBotRunning = false; 
 
 async function startBot(robot) {
-
+  console.log('StartBot');
   // if (botController.stopBotSignal) {
   //   console.log('startBot is already running. Ignoring the command.');
   //   return;
@@ -52,6 +52,8 @@ async function startBot(robot) {
 }
 
 async function startAutoDuel(robot) {
+
+  console.log('startAutoDuel');
 
   let target = 1;
   while (true) {
@@ -156,6 +158,7 @@ async function startAutoDuel(robot) {
 }
 
 async function startAutoPvP(robot) {
+  console.log('startAutoPvP');
   // msleep(1000);
   // mouseUse(robot, 890, 1040);
   // msleep(500);

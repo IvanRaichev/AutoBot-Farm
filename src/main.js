@@ -1,10 +1,10 @@
 const path = require("path");
-const { app, BrowserWindow, ipcMain, globalShortcut } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const robot = require("robotjs");
 const keyboard = require("./actions/keyboard.js");
 const { fork } = require("child_process");
+const { spawnProcess, spawnProcessFlag } = createBackgroundProcessPool();
 
-let backgroundProcess;
 let isFlagActive = true;
 
 function createWindow() {
@@ -23,89 +23,106 @@ function createWindow() {
 
   win.webContents.openDevTools();
 
-//   function registerGlobalShortcut() {
-//    // Регистрация горячей клавиши (например, Ctrl+Alt+S)
-//    const shortcutRegistered = globalShortcut.register('F2', () => {
-//       if (win){
-//          win.webContents.send('stop-function', isFlagActive);
-//       }
-//    });
- 
-//    if (!shortcutRegistered) {
-//      console.error('Failed to register global shortcut.');
-//    }
-//  }
- 
-  keyboard.registerHotkeyAndFunction(ipcMain, "F6", (ipcMain) =>
-    backgroundProcess.send({ command: "startBot" })
+  keyboard.registerHotkeyAndFunction(ipcMain, "F6", () =>
+    spawnProcess("startBot")
   );
-  keyboard.registerHotkeyAndFunction(ipcMain, "F5", (ipcMain) =>
-    backgroundProcess.send({ command: "startAutoDuel" })
+  keyboard.registerHotkeyAndFunction(ipcMain, "F5", () =>
+    spawnProcess("startAutoDuel")
   );
-  keyboard.registerHotkeyAndFunction(ipcMain, "F1", (ipcMain) =>
-    backgroundProcess.send({ command: "startAutoPvP" })
+  keyboard.registerHotkeyAndFunction(ipcMain, "F1", () =>
+    spawnProcess("startAutoPvP")
   );
-  keyboard.registerHotkeyAndFunction(ipcMain, "F2", (ipcMain) =>
-    ipcMain.emit("stop-function")
-  );
-
-  //   keyboard.registerHotkeyAndFunction("F6", () =>
-  //     ipcMain.emit("button-clicked", "startBot")
-  //   );
-  //   keyboard.registerHotkeyAndFunction("F5", () =>
-  //     ipcMain.emit("button-clicked-auto", "startAutoDuel")
-  //   );
-  //   keyboard.registerHotkeyAndFunction("F1", () =>
-  //     ipcMain.emit("button-clicked-pvp", "startAutoPvP")
-  //   );
-  //   keyboard.registerHotkeyAndFunction("F2", () =>
-  //     ipcMain.emit("stop-function")
-  //   );
+  keyboard.registerHotkeyAndFunction(ipcMain, "F2", () => {
+    spawnProcessFlag("toggleFlag", );
+  });
 
   win.webContents.on("dom-ready", async () => {
     try {
       ipcMain.on("button-clicked", () => {
-        backgroundProcess.send({ command: "startBot" });
+        spawnProcess("startBot");
       });
 
       ipcMain.on("button-clicked-auto", () => {
-        backgroundProcess.send({ command: "startAutoDuel" });
+        spawnProcess("startAutoDuel");
       });
 
       ipcMain.on("button-clicked-pvp", () => {
-        backgroundProcess.send({ command: "startAutoPvP" });
+        spawnProcess("startAutoPvP");
       });
 
       ipcMain.on("stop-function", (event, data) => {
-        // Инвертируем значение
         const invertedValue = !data;
-        event.reply("reply", invertedValue);
+        console.log(invertedValue);
+        event.sender.send("reply", invertedValue);
       });
+
+      // ipcMain.on("toggle-flag", () => {
+      //   spawnProcess("startAutoPvP");
+      // });
     } catch (error) {
       console.error("Error getting element value:", error);
     }
   });
 }
 
-function createBackgroundProcess() {
-  backgroundProcess = fork(path.join(__dirname, "background-process.js"));
+const commandQueue = [];
+let isProcessRunning = false;
+let isFunctionRunning = false;
 
-  backgroundProcess.on("message", (message) => {
-    console.log("Message from background process:", message);
-
-    if (message.status === "completed") {
+function createBackgroundProcessPool() {
+  function spawnProcess(command) {
+    if (isFunctionRunning && command !== "toggleFlag") {
+      console.log(`Function ${command} is already running. Skipping...`);
+      return;
     }
-  });
 
-  backgroundProcess.on("close", (code) => {
-    console.log(`Background process exited with code ${code}`);
-  });
+    isFunctionRunning = true;
+    commandQueue.push({ command, invertedValue: undefined });
+
+    if (isProcessRunning) return;
+    executeNextCommand();
+  }
+
+  function spawnProcessFlag(command, invertedValue = undefined) {
+    commandQueue.push({ command, invertedValue });
+    executeNextCommand();
+  }
+
+  function executeNextCommand() {
+    if (commandQueue.length === 0) {
+      isProcessRunning = false;
+      return;
+    }
+
+    const { command, invertedValue } = commandQueue.shift();
+    isProcessRunning = true;
+
+    const process = fork(path.join(__dirname, "background-process.js"), [], {
+      env: { ELECTRON_RUN_AS_NODE: true },
+    });
+
+    process.on("message", (message) => {
+      console.log("Message from background process:", message);
+      if (message.status === "completed" || message.status === "flagToggled") {
+        isFunctionRunning = false;
+        executeNextCommand();
+      }
+      if (message.status === "flagToggled") {
+      }
+    });
+
+    process.send({ command, invertedValue });
+  }
+
+  return {
+    spawnProcess,
+    spawnProcessFlag,
+  };
 }
 
 function startRender() {
   app.whenReady().then(() => {
     createWindow();
-    createBackgroundProcess();
 
     app.on("window-all-closed", () => {
       if (process.platform !== "darwin") {

@@ -21,14 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     stopFunction.addEventListener("click", () => {
       const info = document.querySelector(".stop-flag");
-      console.log(info);
-  
-      api.send("stop-function", isFlagActive);
-  
-      api.on("reply", (event, data) => {
-        isFlagActive = data;
-        info.innerHTML = isFlagActive.toString();
-      });
+      isFlagActive = !isFlagActive; 
+      info.innerHTML = isFlagActive.toString(); 
     });
   }, 1000);
 });
