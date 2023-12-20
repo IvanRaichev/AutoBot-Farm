@@ -6,7 +6,11 @@ process.on("message", async (message) => {
   const { command, invertedValue } = message;
 
    if (message.command === "startBot") {
-    await mouseEvent.startBot(robot);
+    let updatedValue = "true";
+    while(updatedValue === "true"){
+      await mouseEvent.startBot(robot);
+      updatedValue = ipcRenderer.sendSync('request-stop-flag-value');
+    }
     process.send({ status: "completed" });
     process.exit();
   } else if (message.command === "startAutoDuel") {

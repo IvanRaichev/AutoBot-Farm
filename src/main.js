@@ -35,6 +35,8 @@ function createWindow() {
 
   win.webContents.on("dom-ready", async () => {
     try {
+
+      let sharedFlagValue;
       ipcMain.on("button-clicked", () => {
         spawnProcess("startBot");
       });
@@ -52,6 +54,13 @@ function createWindow() {
         win.webContents.send('update-stop-flag', newValue);
       });
 
+      ipcMain.on('update-stop-flag-value', (event, flagValue) => {
+        sharedFlagValue = flagValue;  
+      });
+
+      ipcMain.on('request-stop-flag-value', (event) => {
+        event.returnValue = sharedFlagValue; // Отправка текущего значения в ответ на запрос
+      });
     } catch (error) {
       console.error("Error getting element value:", error);
     }
