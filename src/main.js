@@ -9,8 +9,9 @@ let isFlagActive = true;
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 700,
-    height: 500,
+    width: 1000,
+    height: 520,
+    resizable: false,
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, "preload.js"),
@@ -19,8 +20,8 @@ function createWindow() {
 
   win.setMenuBarVisibility(false);
 
-  win.loadFile(path.join(__dirname, "index.html"));
-
+  // win.loadFile(path.join(__dirname, "index.html"));
+  win.loadURL('http://localhost:3000');
   win.webContents.openDevTools();
 
   keyboard.registerHotkeyAndFunction(ipcMain, "F6", () =>
