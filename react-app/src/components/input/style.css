@@ -1,50 +1,51 @@
-.checkbox {
-   display: flex;
-   align-items: center;
-}
-
-.checkbox-button {
-   display: block;
-   background: #FFF;
-   width: 72px;
-   height: 30px;
-   border-radius: 34px;
-   border: 2px solid #333;
-   cursor: pointer;
+.timer__container {
    position: relative;
-   color: #fff;
-   transition: 0.2s;
+   width: 200px;
+   margin-bottom: 20px;
 }
 
-.checkbox-button::before {
+.timer-label {
    position: absolute;
-   content: "OFF";
-   width: 36px;
-   height: 25px;
-   border-radius: 100px;
-   background: #333;
-   transition: 0.2s;
-   margin-top: 0.5px;
-   margin-left: 1px;
-   color: #666;
-   font-variant-numeric: slashed-zero;
-   font-family: Inter;
+   left: 10px;
+   top: 50%;
+   transform: translateY(-50%);
+   transition: 0.3s;
+   pointer-events: none; /* чтобы метка не перехватывала клики */
+   color: #333; /* цвет метки (можно изменить по желанию) */
+}
+
+.setting__timer {
+   display: block;
+   padding: 5px;
+   font-size: 16px;
+   border: 2px solid #ccc;
+   border-radius: 5px;
+   width: 100%;
+   outline: none;
+}
+
+.setting__timer:focus + .timer-label,
+.setting__timer:not(:placeholder-shown) + .timer-label {
    font-size: 12px;
-   font-weight: 700;
-   display: flex;
-   align-items: center;
-   justify-content: center;
+   transform: translateY(-100%) translateX(5px);
+   background-color: #fff;
+   padding: 0 5px;
+   color: #007bff; /* цвет метки при фокусе или при вводе */
 }
 
-input {
-   display: none;
+.timer-label.active {
+   font-size: 12px;
+   transform: translateY(-190%) translateX(-14px);
+   background-color: transparent;
+   padding: 0 5px;
+   color: #007bff;
 }
 
-input:checked+.checkbox-button::before {
-   transform: translateX(30px);
-   content: "ON";
-   color: #ECECEC;
-   background: linear-gradient(121deg, rgba(0, 61, 127, 0.80) 16.51%, rgba(2, 113, 234, 0.80) 86.12%);
+ input[type="number"]{
+   -moz-appearance: textfield;
+ }
 
-
-}
+ input[type="number"]::-webkit-outer-spin-button,
+ input[type="number"]::-webkit-inner-spin-button{
+   -webkit-appearance: none;
+ }

@@ -1,18 +1,28 @@
 import "./style.css"
+import React, { useState } from 'react';
 
-const Input = (props) => {
+const Input = () => {
+   const [isActive, setIsActive] = useState(false);
 
-   const handleChange = (e) => {
-      if (props.onChange) {
-         props.onChange(e);
-      }
+   const handleLabelClick = () => {
+       setIsActive(true);
    };
 
+   const handleInputChange = (e) => {
+       if (e.target.value) {
+           setIsActive(true);
+       } else {
+           setIsActive(false);
+       }
+   };
+
+
    return (
-      <div className="checkbox">
-         <input type="checkbox" id={props.id}  onChange={handleChange}/>
-         <label htmlFor={props.htmlFor} className="checkbox-button"></label>
+      <div className="timer__container">
+         <label htmlFor="numberInput" className={`timer-label ${isActive ? 'active' : ''}`} onClick={handleLabelClick}>Set minutes</label>
+         <input type="number" id="numberInput" className="setting__timer" placeholder="" onChange={handleInputChange}></input>
       </div>
+
    );
 }
 
