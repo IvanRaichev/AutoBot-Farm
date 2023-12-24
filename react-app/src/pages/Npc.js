@@ -1,6 +1,7 @@
-import exp from "./../img/setting/exp-boost.svg"
-import result from "./../img/setting/result-booster.svg"
 import Navbar from "../components/navbar/Navbar"
+import Settings from "../components/settings/Settings"
+import Button from "../components/button/Button"
+import { settings } from "../helpers/settingsList"
 
 const Npc = () => {
    return (
@@ -13,58 +14,32 @@ const Npc = () => {
                      <div className="main__settings settings">
                         <h2 className="settings__title">Settings NPC</h2>
                         <ul className="settings__list">
-                           <li className="settings__item">
-                              <img src={exp} alt="exp" />
-                              <span className="settings__link">Activate EXP Booster on Vagabond</span>
-                              <div className="settings__checkbox">
-                                 <input type="checkbox" id="check-exp-npc" />
-                                 <label for="check-exp-npc" className="checkbox-button"></label>
-                              </div>
-                           </li>
-                           <li className="settings__item">
-                              <img src={exp} alt="result" />
-                              <span className="settings__link">Activate Result Booster on Vagabond</span>
-                              <div className="settings__checkbox">
-                                 <input type="checkbox" id="check-result-npc" />
-                                 <label for="check-result-npc" className="checkbox-button"></label>
-                              </div>
-                           </li>
-                           <li className="settings__item">
-                              <img src={result} alt="exp" />
-                              <span className="settings__link">Activate Restart Duel Orb</span>
-                              <div className="settings__checkbox">
-                                 <input type="checkbox" id="check-exp-npc" />
-                                 <label for="check-exp-npc" className="checkbox-button"></label>
-                              </div>
-                           </li>
+                        {settings
+                           .filter(item => item.content === "Npc")
+                           .map((settings, index)=>{
+                              return(
+                                 <Settings key={index} title={settings.title} img={settings.img} id={settings.id} for={settings.for} alt={settings.alt}/>
+                              )
+                           })}
 
                         </ul>
                      </div>
                      <div className="main__settings settings">
                         <h2 className="settings__title">Settings PVP</h2>
                         <ul className="settings__list">
-                           <li className="settings__item">
-                              <img src={exp} alt="exp" />
-                              <span className="settings__link">Activate EXP Booster</span>
-                              <div className="settings__checkbox">
-                                 <input type="checkbox" id="check-exp-pvp" />
-                                 <label for="check-exp-pvp" className="checkbox-button"></label>
-                              </div>
-                           </li>
-                           <li className="settings__item">
-                              <img src={exp} alt="result" />
-                              <span className="settings__link">Activate Result Booster</span>
-                              <div className="settings__checkbox">
-                                 <input type="checkbox" id="check-result-pvp" />
-                                 <label for="check-result-pvp" className="checkbox-button"></label>
-                              </div>
-                           </li>
+                        {settings
+                           .filter(item => item.content === "PvP")
+                           .map((settings, index)=>{
+                              return(
+                                 <Settings key={index} title={settings.title} img={settings.img} id={settings.id} for={settings.for} alt={settings.alt}/>
+                              )
+                           })}
                         </ul>
                      </div>
                   </div>
                   <div className = "buttons">
-                  <button className="button__start btn-test2">Start NPC</button>
-                  <button className="button__start btn-test3">Start PvP</button>
+                  <Button title="Start NPC" name="button__start btn-npc"/>
+                  <Button title="Start PvP" name="button__start btn-pvp"/>
                </div>
                </div>
 

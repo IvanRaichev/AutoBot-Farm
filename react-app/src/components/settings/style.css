@@ -1,0 +1,12 @@
+
+.settings__item {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+
+.settings__link {
+   color: #FFF;
+   font-family: Inter;
+   font-weight: 700;
+}

@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
-    const button = document.querySelector(".btn-test");
-    const buttonAuto = document.querySelector(".btn-test2");
-    const buttonPvP = document.querySelector(".btn-test3");
+    const button = document.querySelector(".btn-gate");
+    const buttonAuto = document.querySelector(".btn-npc");
+    const buttonPvP = document.querySelector(".btn-pvp");
     const stopFlagElement = document.querySelector(".stop-flag");
     let isFlagActive = true;
 

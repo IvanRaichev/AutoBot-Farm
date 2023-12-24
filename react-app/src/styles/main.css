@@ -48,7 +48,7 @@ body {
    font-size: 16px;
    font-weight: 400;
    color: #FFF;
-   overflow:hidden;
+   overflow-y:hidden;
    min-height: 100vh;
 }
 
@@ -85,11 +85,6 @@ body {
    margin-bottom: 90px;
 }
 
-.settings__link {
-   color: #FFF;
-   font-family: Inter;
-   font-weight: 700;
-}
 
 .settings__list {
    display: flex;
@@ -97,62 +92,8 @@ body {
    gap: 22px;
 }
 
-.settings__item {
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
-}
-
-.settings__checkbox {
-   display: flex;
-   align-items: center;
-}
-
-.checkbox-button {
-   display: block;
-   background: #FFF;
-   width: 72px;
-   height: 30px;
-   border-radius: 34px;
-   border: 2px solid #333;
-   cursor: pointer;
-   position: relative;
-   color: #fff;
-   transition: 0.2s;
-}
-
-.checkbox-button::before {
-   position: absolute;
-   content: "OFF";
-   width: 36px;
-   height: 26px;
-   border-radius: 100px;
-   background: #333;
-   transition: 0.2s;
-   margin-top: 0.5px;
-   margin-left: 1px;
-   color: #666;
-   font-variant-numeric: slashed-zero;
-   font-family: Inter;
-   font-size: 12px;
-   font-weight: 700;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-}
-
-input {
-   display: none;
-}
-
-input:checked+.checkbox-button::before {
-   transform: translateX(30px);
-   content: "ON";
-   color: #ECECEC;
-   background: linear-gradient(121deg, rgba(0, 61, 127, 0.80) 16.51%, rgba(2, 113, 234, 0.80) 86.12%);
 
 
-}
 
 .choose-person__title {
    color: #FFF;
@@ -170,9 +111,13 @@ input:checked+.checkbox-button::before {
    margin: 0 auto;
 }
 
-.slider-person {
+.slick-slider {
    width: 312px;
    position: relative;
+}
+
+.slick-slider.hidden{
+   opacity: 0;
 }
 
 
@@ -192,28 +137,6 @@ input:checked+.checkbox-button::before {
    display: flex;
    align-items: center;
    gap: 330px;
-   margin-top: 90px;
+   margin-top: 25px;
 }
 
-.button__start {
-   width: 180px;
-   height: 40px;
-   border-radius: 18px;
-   background: linear-gradient(90deg, #75DBFF 0%, #004DA1 100%);
-   box-shadow: 0px 7px 20px 0px rgba(112, 184, 251, 0.45);
-   border: none;
-   color: #FFF;
-   text-align: center;
-   font-family: Alfa Slab One;
-   font-size: 20px;
-   font-weight: 400;
-   line-height: 24px;
-   cursor: pointer;
-   transition: all 0.3s ease;
-}
-
-.button__start:hover {
-   box-shadow: 0px 4px 10px 0px rgba(112, 184, 251, 0.45);
-   background: linear-gradient(90deg, #75DBFF 10%, #004DA1 90%);
-   transition: all 0.3s ease;
-}

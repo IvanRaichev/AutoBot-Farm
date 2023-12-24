@@ -1,0 +1,22 @@
+.button__start {
+   width: 180px;
+   height: 40px;
+   border-radius: 18px;
+   background: linear-gradient(90deg, #75DBFF 0%, #004DA1 100%);
+   box-shadow: 0px 7px 20px 0px rgba(112, 184, 251, 0.45);
+   border: none;
+   color: #FFF;
+   text-align: center;
+   font-family: Alfa Slab One;
+   font-size: 20px;
+   font-weight: 400;
+   line-height: 24px;
+   cursor: pointer;
+   transition: all 0.3s ease;
+}
+
+.button__start:hover {
+   box-shadow: 0px 4px 10px 0px rgba(112, 184, 251, 0.45);
+   background: linear-gradient(90deg, #75DBFF 10%, #004DA1 90%);
+   transition: all 0.3s ease;
+}
