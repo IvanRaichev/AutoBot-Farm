@@ -1,12 +1,9 @@
 const path = require("path");
 const { app, BrowserWindow, ipcMain } = require("electron");
-const robot = require("robotjs");
 const keyboard = require("./actions/keyboard.js");
 const { fork } = require("child_process");
-const { spawnProcess, spawnProcessFlag } = createBackgroundProcessPool();
+const { spawnProcess} = createBackgroundProcessPool();
 const fs = require('fs');
-
-let isFlagActive = true;
 
 const filePath = path.join(__dirname, '../resources/data/check.txt');
 
@@ -35,7 +32,6 @@ function createWindow() {
 
   win.loadFile(path.join(__dirname, "index.html"));
   // win.loadURL('http://localhost:3000');
-  win.webContents.openDevTools();
 
   keyboard.registerHotkeyAndFunction(ipcMain, "F6", () =>
     spawnProcess("startBot")

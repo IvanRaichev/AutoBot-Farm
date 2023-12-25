@@ -1,7 +1,3 @@
-// const { contextBridge, ipcRenderer } = require('electron');
-
-// contextBridge.exposeInMainWorld('ipcRenderer', ipcRenderer);
-
 const { ipcRenderer, contextBridge } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {

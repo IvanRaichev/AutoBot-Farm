@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     const stopFlagElement = document.querySelector(".stop-flag");
-    let isFlagActive = true;
     new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (
