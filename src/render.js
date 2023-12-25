@@ -1,23 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
-    const button = document.querySelector(".btn-gate");
-    const buttonAuto = document.querySelector(".btn-npc");
-    const buttonPvP = document.querySelector(".btn-pvp");
     const stopFlagElement = document.querySelector(".stop-flag");
     let isFlagActive = true;
-
-    button.addEventListener("click", () => {
-      api.send("button-clicked");
-    });
-
-    buttonAuto.addEventListener("click", () => {
-      api.send("button-clicked-auto");
-    });
-
-    buttonPvP.addEventListener("click", () => {
-      api.send("button-clicked-pvp");
-    });
-    
     new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (
@@ -44,5 +28,44 @@ document.addEventListener("DOMContentLoaded", () => {
     api.on("update-stop-flag", (event, newValue) => {
       stopFlagElement.textContent = newValue;
     });
-  }, 1000);
+  }, 2000);
+
+  let intervalId;
+
+  function setupHandlers() {
+    const button = document.querySelector(".btn-gate");
+    const buttonAuto = document.querySelector(".btn-npc");
+    const buttonPvP = document.querySelector(".btn-pvp");
+
+    if (button) {
+      button.addEventListener("click", () => {
+        api.send("button-clicked");
+      });
+    }
+
+    if (buttonAuto) {
+      buttonAuto.addEventListener("click", () => {
+        api.send("button-clicked-auto");
+      });
+    }
+
+    if (buttonPvP) {
+      buttonPvP.addEventListener("click", () => {
+        api.send("button-clicked-pvp");
+      });
+    }
+  }
+
+  intervalId = setInterval(() => {
+    setupHandlers();
+    setTimeout(() => {
+      const buttons = document.querySelectorAll(".btn-gate, .btn-npc, .btn-pvp");
+      buttons.forEach(button => {
+        const clonedButton = button.cloneNode(true);
+        button.parentNode.replaceChild(clonedButton, button);
+      });
+    }, 1000)
+
+
+  }, 2000);
 });

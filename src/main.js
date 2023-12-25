@@ -4,8 +4,21 @@ const robot = require("robotjs");
 const keyboard = require("./actions/keyboard.js");
 const { fork } = require("child_process");
 const { spawnProcess, spawnProcessFlag } = createBackgroundProcessPool();
+const fs = require('fs');
 
 let isFlagActive = true;
+
+const filePath = path.join(__dirname, '../resources/data/check.txt');
+
+if (!fs.existsSync(filePath)) {
+  fs.writeFileSync(filePath, 'true');
+} else {
+  const currentValue = fs.readFileSync(filePath, 'utf8').trim();
+  if (currentValue !== 'true') {
+    fs.writeFileSync(filePath, 'true');
+    console.log('check.txt has been updated with value: true');
+  }
+}
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -20,8 +33,8 @@ function createWindow() {
 
   win.setMenuBarVisibility(false);
 
-  // win.loadFile(path.join(__dirname, "index.html"));
-  win.loadURL('http://localhost:3000');
+  win.loadFile(path.join(__dirname, "index.html"));
+  // win.loadURL('http://localhost:3000');
   win.webContents.openDevTools();
 
   keyboard.registerHotkeyAndFunction(ipcMain, "F6", () =>
@@ -37,7 +50,7 @@ function createWindow() {
   win.webContents.on("dom-ready", async () => {
     try {
 
-      let sharedFlagValue;
+      let sharedFlagValue = "true";
       ipcMain.on("button-clicked", () => {
         spawnProcess("startBot");
       });
@@ -56,21 +69,26 @@ function createWindow() {
       });
 
       ipcMain.on('update-stop-flag-value', (event, flagValue) => {
-        sharedFlagValue = flagValue;  
+        sharedFlagValue = flagValue;
+        fs.writeFileSync(filePath, sharedFlagValue);
       });
 
-      ipcMain.on('request-stop-flag-value', (event) => {
-        event.returnValue = sharedFlagValue; // Отправка текущего значения в ответ на запрос
+      ipcMain.on("request-stop-flag-value", (event) => {
+        event.sender.send("response-stop-flag-value", sharedFlagValue);
       });
+
     } catch (error) {
       console.error("Error getting element value:", error);
     }
   });
 }
 
+
+
 const commandQueue = [];
 let isProcessRunning = false;
 let isFunctionRunning = false;
+
 
 function createBackgroundProcessPool() {
   function spawnProcess(command) {

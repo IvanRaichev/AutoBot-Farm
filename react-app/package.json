@@ -20,6 +20,17 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "build": {
+    "appId": "com.electron.electron-with-create-react-app",
+    "extends": null,
+    "files": [
+      "build/**/*",
+      "public/**/*"
+    ],
+    "directories":{
+      "buildResources": "public/images"
+    }
+  },
   "eslintConfig": {
     "extends": [
       "react-app",

@@ -1,17 +1,8 @@
-let isBotRunning = false; 
-
 async function startBot(robot) {
   console.log('StartBot');
-  // if (botController.stopBotSignal) {
-  //   console.log('startBot is already running. Ignoring the command.');
-  //   return;
-  // }
-
     msleep(2000);
 
-
-
-    await checkAndUseGate(robot);
+    mouseUse(robot, 1090, 468);
 
     let duelCoordinates = {
       x: 925,
@@ -335,19 +326,6 @@ function collectReward(robot) {
   }
 }
 
-function collectRewardPvP(robot) {
-  msleep(1000);
-  let cordX = 958;
-  let cordY = 957;
-  let i = 0;
-
-  while (i < 30) {
-    console.log("Click " + i);
-    msleep(500);
-    mouseUse(robot, cordX, cordY);
-    ++i;
-  }
-}
 
 async function drawCardAsync(robot) {
   mouseUse(robot, 560, 0);
@@ -376,27 +354,6 @@ async function findElementWithRetry(robot, capture, colors) {
   } while (element === false);
 
   return element;
-}
-
-async function checkAndUseGate(robot) {
-  let gateCoordinates = {
-    x: 1080,
-    y: 432,
-    width: 1110 - 1080,
-    height: 450 - 432,
-  };
-
-  let gate = await findElementWithRetry(robot, gateCoordinates, [
-    "54f7f7",
-    "688552",
-    "7f9c5c",
-    "739855",
-  ]);
-
-  if (gate !== false) {
-    console.log("Success - Found Gate");
-    mouseUse(robot, gate.x, gate.y);
-  }
 }
 
 async function chechAttack(robot) {

@@ -26,4 +26,7 @@ contextBridge.exposeInMainWorld("api", {
   removeAllListeners: (channel) => {
       ipcRenderer.removeAllListeners(channel);
   },
+  sendSync:(channel)=>{
+    ipcRenderer.sendSync(channel);
+  }
 });

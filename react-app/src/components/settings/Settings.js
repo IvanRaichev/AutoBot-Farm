@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Checkbox from "../checkbox/Checkbox";
+import ReplaceImagePaths from "../../helpers/replaceImagePaths"
 import "./style.css";
 
 const Settings = (props) => {
@@ -27,7 +28,9 @@ const Settings = (props) => {
          <span className="settings__link">{props.title}</span>
 
          <Checkbox id={props.id} htmlFor={props.for} onChange={handleInputChange} />
+         {ReplaceImagePaths()}
       </li>
+      
    );
 }
 

@@ -1,0 +1,626 @@
+@charset "UTF-8";
+
+*,
+:after,
+:before {
+   box-sizing: border-box
+}
+
+ol[class],
+ul[class] {
+   padding: 0
+}
+
+blockquote,
+body,
+dd,
+dl,
+figcaption,
+figure,
+h1,
+h2,
+h3,
+h4,
+li,
+ol[class],
+p,
+ul[class] {
+   margin: 0
+}
+
+body {
+   line-height: 1.5;
+   scroll-behavior: smooth;
+   text-rendering: optimizeSpeed
+}
+
+ol[class],
+ul[class] {
+   list-style: none
+}
+
+a:not([class]) {
+   -webkit-text-decoration-skip: ink;
+   text-decoration-skip-ink: auto
+}
+
+img {
+   display: block
+}
+
+article>*+* {
+   margin-top: 1em
+}
+
+button,
+input,
+select,
+textarea {
+   font: inherit
+}
+
+@media (prefers-reduced-motion:reduce) {
+   * {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: .01ms !important
+   }
+}
+
+@font-face {
+   font-display: swap;
+   font-family: Alfa Slab One;
+   font-style: normal;
+   font-weight: 400;
+   src: url(../media/AlfaSlabOne-Regular.3ac82cc2a1123ad7c4b4.woff2) format("woff2"), url(/static/media/AlfaSlabOne-Regular.3fac17380181163d90a8.woff) format("woff")
+}
+
+@font-face {
+   font-display: swap;
+   font-family: Inter;
+   font-style: normal;
+   font-weight: 700;
+   src: url(../media/Inter-Bold.ef4f1fa4544b2a5eaf2c.woff2) format("woff2"), url(/static/media/Inter-Bold.608c6517b6b9a538cdfc.woff) format("woff")
+}
+
+@font-face {
+   font-display: swap;
+   font-family: Inter;
+   font-style: normal;
+   font-weight: 500;
+   src: url(../media/Inter-Medium.2e49fa70be6011988c79.woff2) format("woff2"), url(/static/media/Inter-Medium.f54039e3202e9ad4fe3c.woff) format("woff")
+}
+
+body,
+html {
+   height: 100%
+}
+
+img {
+   max-width: 100%
+}
+
+a {
+   text-decoration: none
+}
+
+body {
+   background: url(../media/background.08309c6b680eb5ccdf4a.jpg);
+   background-repeat: no-repeat;
+   background-size: cover;
+   color: #fff;
+   font-family: Inter;
+   font-size: 16px;
+   font-weight: 400;
+   overflow-y: hidden
+}
+
+#root,
+.App,
+body {
+   min-height: 100vh
+}
+
+.App {
+   display: flex;
+   flex-direction: column
+}
+
+.container {
+   margin: 0 auto;
+   max-width: 1000px;
+   padding: 0 27px
+}
+
+.structur-box {
+   display: flex;
+   justify-content: space-between;
+   margin-top: 35px;
+   min-height:350px;
+}
+
+.settings__title {
+   color: #fff;
+   font-family: Alfa Slab One;
+   font-size: 24px;
+   font-weight: 400;
+   line-height: 24px;
+   margin-bottom: 70px;
+   text-shadow: 0 4px 4px #0003
+}
+.btn-gate{
+   color:#000;
+}
+.settings__list {
+   display: flex;
+   flex-direction: column;
+   gap: 22px
+}
+
+.choose-person__title {
+   color: #fff;
+   font-family: Alfa Slab One;
+   font-size: 24px;
+   font-weight: 400;
+   line-height: 24px;
+   margin-bottom: 22px;
+   text-align: center;
+   text-shadow: 0 4px 4px #0003
+}
+
+.slick-slide img {
+   margin: 0 auto
+}
+
+.slick-slider {
+   width: 312px
+}
+
+.slick-slider.hidden {
+   opacity: 0
+}
+
+.slider-arrows {
+   cursor: pointer;
+   position: absolute;
+   right: 0;
+   top: 100px;
+   z-index: 4
+}
+
+.slider-arrows_left {
+   left: 0
+}
+
+.buttons {
+   align-items: center;
+   display: flex;
+   gap: 330px;
+}
+
+.menu {
+   margin-top: 13px
+}
+
+.menu__list {
+   gap: 30px
+}
+
+.menu__item-click,
+.menu__list {
+   align-items: center;
+   display: flex
+}
+
+.menu__item-click {
+   gap: 16px;
+   padding-bottom: 10px;
+   position: relative
+}
+
+.menu__item-click:after {
+   background-color: #1ca1d0;
+   bottom: 0;
+   content: "";
+   height: 3px;
+   left: 0;
+   position: absolute;
+   transition: width .3s;
+   width: 0
+}
+
+.menu__item-click.active:after,
+.menu__item-click:hover:after {
+   width: 100%
+}
+
+.menu__item-click.active .menu__item-link {
+   color: #f9f9f9
+}
+
+.menu__item-click.active path {
+   fill: #1ca1d0
+}
+
+.menu__item-link {
+   color: #87b0d1;
+   font-family: Inter;
+   font-size: 16px;
+   font-weight: 500;
+   letter-spacing: .08px;
+   line-height: 24px
+}
+
+.main__settings {
+   width: 436px
+}
+
+.checkbox {
+   align-items: center;
+   display: flex
+}
+
+.checkbox-button {
+   background: #fff;
+   border: 2px solid #333;
+   border-radius: 34px;
+   color: #fff;
+   cursor: pointer;
+   display: block;
+   height: 30px;
+   position: relative;
+   transition: .2s;
+   width: 72px
+}
+
+.checkbox-button:before {
+   font-feature-settings: "zero";
+   align-items: center;
+   background: #333;
+   border-radius: 100px;
+   color: #666;
+   content: "OFF";
+   display: flex;
+   font-family: Inter;
+   font-size: 12px;
+   font-variant-numeric: slashed-zero;
+   font-weight: 700;
+   height: 25px;
+   justify-content: center;
+   margin-left: 1px;
+   margin-top: .5px;
+   position: absolute;
+   transition: .2s;
+   width: 36px
+}
+
+input {
+   display: none
+}
+
+input:checked+.checkbox-button:before {
+   background: linear-gradient(121deg, #003d7fcc 16.51%, #0271eacc 86.12%);
+   color: #ececec;
+   content: "ON";
+   transform: translateX(30px)
+}
+
+.settings__item {
+   align-items: center;
+   display: flex;
+   justify-content: space-between
+}
+
+.settings__link {
+   color: #fff;
+   font-family: Inter;
+   font-weight: 700
+}
+
+.button__start {
+   background: linear-gradient(90deg, #75dbff, #004da1);
+   border: none;
+   border-radius: 18px;
+   box-shadow: 0 7px 20px 0 #70b8fb73;
+   color: #fff;
+   cursor: pointer;
+   font-family: Alfa Slab One;
+   font-size: 20px;
+   font-weight: 400;
+   height: 40px;
+   line-height: 24px;
+   text-align: center;
+   transition: all .3s ease;
+   width: 180px
+}
+
+.button__start:hover {
+   background: linear-gradient(90deg, #75dbff 10%, #004da1 90%);
+   box-shadow: 0 4px 10px 0 #70b8fb73;
+   transition: all .3s ease
+}
+
+.slick-slider {
+   -webkit-touch-callout: none;
+   -webkit-tap-highlight-color: transparent;
+   box-sizing: border-box;
+   touch-action: pan-y;
+   -webkit-user-select: none;
+   user-select: none;
+   -khtml-user-select: none
+}
+
+.slick-list,
+.slick-slider {
+   display: block;
+   position: relative
+}
+
+.slick-list {
+   margin: 0;
+   overflow: hidden;
+   padding: 0
+}
+
+.slick-list:focus {
+   outline: none
+}
+
+.slick-list.dragging {
+   cursor: pointer;
+   cursor: hand
+}
+
+.slick-slider .slick-list,
+.slick-slider .slick-track {
+   transform: translateZ(0)
+}
+
+.slick-track {
+   display: block;
+   left: 0;
+   margin-left: auto;
+   margin-right: auto;
+   position: relative;
+   top: 0
+}
+
+.slick-track:after,
+.slick-track:before {
+   content: "";
+   display: table
+}
+
+.slick-track:after {
+   clear: both
+}
+
+.slick-loading .slick-track {
+   visibility: hidden
+}
+
+.slick-slide {
+   display: none;
+   float: left;
+   height: 100%;
+   min-height: 1px
+}
+
+[dir=rtl] .slick-slide {
+   float: right
+}
+
+.slick-slide img {
+   display: block
+}
+
+.slick-slide.slick-loading img {
+   display: none
+}
+
+.slick-slide.dragging img {
+   pointer-events: none
+}
+
+.slick-initialized .slick-slide {
+   display: block
+}
+
+.slick-loading .slick-slide {
+   visibility: hidden
+}
+
+.slick-vertical .slick-slide {
+   border: 1px solid #0000;
+   display: block;
+   height: auto
+}
+
+.slick-arrow.slick-hidden {
+   display: none
+}
+
+@font-face {
+   font-family: slick;
+   font-style: normal;
+   font-weight: 400
+}
+
+.slick-next,
+.slick-prev {
+   border: none;
+   cursor: pointer;
+   display: block;
+   font-size: 0;
+   height: 20px;
+   line-height: 0;
+   padding: 0;
+   position: absolute;
+   top: 47%;
+   transform: translateY(-50%);
+   width: 20px;
+   z-index: 10
+}
+
+.slick-next,
+.slick-next:focus,
+.slick-next:hover,
+.slick-prev,
+.slick-prev:focus,
+.slick-prev:hover {
+   background: #0000;
+   color: #0000;
+   outline: none
+}
+
+.slick-next:focus:before,
+.slick-next:hover:before,
+.slick-prev:focus:before,
+.slick-prev:hover:before {
+   opacity: 1
+}
+
+.slick-prev {
+   left: 0
+}
+
+[dir=rtl] .slick-prev {
+   left: auto;
+   right: -25px
+}
+
+.slick-next {
+   right: 0
+}
+
+[dir=rtl] .slick-next {
+   left: -25px;
+   right: auto
+}
+
+.slick-dotted.slick-slider {
+   margin-bottom: 30px
+}
+
+.slick-dots {
+   bottom: -25px;
+   display: block;
+   list-style: none;
+   margin: 0;
+   padding: 0;
+   position: absolute;
+   text-align: center;
+   width: 100%
+}
+
+.slick-dots li {
+   display: inline-block;
+   margin: 0 5px;
+   padding: 0;
+   position: relative
+}
+
+.slick-dots li,
+.slick-dots li button {
+   cursor: pointer;
+   height: 20px;
+   width: 20px
+}
+
+.slick-dots li button {
+   background: #0000;
+   border: 0;
+   color: #0000;
+   display: block;
+   font-size: 0;
+   line-height: 0;
+   outline: none;
+   padding: 5px
+}
+
+.slick-dots li button:focus,
+.slick-dots li button:hover {
+   outline: none
+}
+
+.slick-dots li button:focus:before,
+.slick-dots li button:hover:before {
+   opacity: 1
+}
+
+.slick-dots li button:before {
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   color: #000;
+   content: "•";
+   font-family: slick;
+   font-size: 6px;
+   height: 20px;
+   left: 0;
+   line-height: 20px;
+   opacity: .25;
+   position: absolute;
+   text-align: center;
+   top: 0;
+   width: 20px
+}
+
+.slick-dots li.slick-active button:before {
+   color: #000;
+   opacity: .75
+}
+
+.timer__container {
+   margin-bottom: 20px;
+   position: relative;
+   width: 200px
+}
+
+.timer-label {
+   color: #333;
+   left: 10px;
+   pointer-events: none;
+   position: absolute;
+   top: 50%;
+   transform: translateY(-50%);
+   transition: .3s
+}
+
+.setting__timer {
+   border: 2px solid #ccc;
+   border-radius: 5px;
+   display: block;
+   font-size: 16px;
+   outline: none;
+   padding: 5px;
+   width: 100%
+}
+
+.setting__timer:focus+.timer-label,
+.setting__timer:not(:placeholder-shown)+.timer-label {
+   background-color: #fff;
+   color: #007bff;
+   font-size: 12px;
+   padding: 0 5px;
+   transform: translateY(-100%) translateX(5px)
+}
+
+.timer-label.active {
+   background-color: initial;
+   color: #007bff;
+   font-size: 12px;
+   padding: 0 5px;
+   transform: translateY(-190%) translateX(-14px)
+}
+
+input[type=number] {
+   -moz-appearance: textfield
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+   -webkit-appearance: none
+}
+
+/*# sourceMappingURL=main.3e1b72f5.css.map*/
