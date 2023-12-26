@@ -41,8 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     api.on("request-info-for-F1", () => {
-      const infoForF1 = checkCheckboxState();
-      api.send("response-info-for-F1", infoForF1);
+      const info = checkCheckboxState();
+      api.send("response-info-for-F1", info);
     });
 
 
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   });
 
-    return stateObject; // Выводим состояния в консоль для проверки
+    return stateObject; 
   }
 
   intervalId = setInterval(() => {

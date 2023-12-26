@@ -37,7 +37,7 @@ function createWindow() {
   keyboard.registerHotkeyAndFunction(ipcMain, "F6", () =>
     win.webContents.send("request-info-for-F6")
   );
-  
+
   ipcMain.on("response-info-for-F6", (event, info) => {
     spawnProcess("startBot", info);
   });
@@ -66,12 +66,12 @@ function createWindow() {
         spawnProcess("startBot", data);
       });
 
-      ipcMain.on("button-clicked-auto", () => {
-        spawnProcess("startAutoDuel");
+      ipcMain.on("button-clicked-auto", (event, data) => {
+        spawnProcess("startAutoDuel", data);
       });
 
-      ipcMain.on("button-clicked-pvp", () => {
-        spawnProcess("startAutoPvP");
+      ipcMain.on("button-clicked-pvp", (event, data) => {
+        spawnProcess("startAutoPvP", data);
       });
 
       ipcMain.on('toggle-stop-flag', (event, currentValue) => {

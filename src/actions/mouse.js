@@ -38,6 +38,7 @@ async function startBot(robot, parametr) {
   mouseUse(robot, 560, 0);
   msleep(1000);
 
+
   if (parametr.hasOwnProperty('check-exp')) {
     let itemCoordinates = {
       x: 1270,
@@ -78,31 +79,30 @@ async function startBot(robot, parametr) {
       msleep(1000);
 
     }
-
-    if (parametr.hasOwnProperty('check-result')) {
-      let resultCoordinates = {
-        x: 740,
-        y: 286,
-        width: 787 - 740,
-        height: 320 - 286,
-      };
-
-      let result = await findElementWithRetry(robot, resultCoordinates, [
-        "222222",
-        "292929",
-        "121411",
-      ]);
-
-      if (result !== false) {
-        console.log("Success - Found Result");
-        mouseUse(robot, result.x, result.y);
-        msleep(1000);
-      }
-    }
-
-    mouseUse(robot, 960, 921);
-    msleep(2000);
   }
+  if (parametr.hasOwnProperty('check-result')) {
+    let resultCoordinates = {
+      x: 740,
+      y: 286,
+      width: 787 - 740,
+      height: 320 - 286,
+    };
+
+    let result = await findElementWithRetry(robot, resultCoordinates, [
+      "222222",
+      "292929",
+      "121411",
+    ]);
+
+    if (result !== false) {
+      console.log("Success - Found Result");
+      mouseUse(robot, result.x, result.y);
+      msleep(1000);
+    }
+  }
+
+  mouseUse(robot, 960, 921);
+  msleep(2000);
 
   if (duel !== false) {
     console.log("Success - Found Duel Again");
@@ -114,114 +114,167 @@ async function startBot(robot, parametr) {
 
 }
 
-async function startAutoDuel(robot) {
+async function startAutoDuel(robot, target, parametr) {
 
-  console.log('startAutoDuel');
+  msleep(1000);
+  let area = {
+    x: 724,
+    y: 560,
+    width: 1200 - 724,
+    height: 803 - 560,
+  };
 
-  let target = 1;
-  while (true) {
+
+  let color = [
+    "d4f7f8",
+    "d6f9fa",
+    "fafefe",
+    "d7f2f2",
+    "d7f3f5",
+    "1fc6da",
+    // "e4ffff",
+    "3fb9c4",
+    "c34444",
+    "4dbeb8",
+    "1bb7d2",
+    "7bd7dd",
+    "2fc8d5",
+    "22b4cd",
+    "60c4c5",
+    "31c4d6",
+    "6accb4",
+    "4dadab",
+    "1cb9d5",
+    "c74444",
+    "41ccd3",
+    "43d3e0",
+    "34bed0",
+    "69c5b6",
+    "49c0ba",
+    "36c9d4",
+    "70d2ca",
+    "3fc1c1",
+    "23bbd6",
+    "37c5d4",
+    "64d1c8",
+  ];
+
+  let auto = await findElementWithRetry(robot, area, color);
+
+  if (auto !== false) {
+    console.log("Success - Found Auto");
+    mouseUse(robot, auto.x - 3, auto.y + 5);
+    msleep(2000);
+
+    mouseUse(robot, 560, 0);
+    mouseUse(robot, 560, 0);
+    mouseUse(robot, 560, 0);
     msleep(1000);
-    let area = {
-      x: 724,
-      y: 560,
-      width: 1200 - 724,
-      height: 803 - 560,
-    };
+    if (auto.color) {
+      if (parametr.hasOwnProperty('check-exp-npc')) {
+        let itemCoordinates = {
+          x: 1270,
+          y: 814,
+          width: 1335 - 1270,
+          height: 834 - 814,
+        };
 
-    // let example = {
-    //   x: 910,
-    //   y: 610,
-    //   width: 981 - 910,
-    //   height: 680 - 610,
-    // };
+        let item = await findElementWithRetry(robot, itemCoordinates, [
+          "aabbce",
+          "829cba",
+          "ffffff",
+        ]);
 
-    let color = [
-      "d4f7f8",
-      "d6f9fa",
-      "fafefe",
-      "d7f2f2",
-      "d7f3f5",
-      "1fc6da",
-      // "e4ffff",
-      "3fb9c4",
-      "c34444",
-      "4dbeb8",
-      "1bb7d2",
-      "7bd7dd",
-      "2fc8d5",
-      "22b4cd",
-      "60c4c5",
-      "31c4d6",
-      "6accb4",
-      "4dadab",
-      "1cb9d5",
-      "c74444",
-      "41ccd3",
-      "43d3e0",
-      "34bed0",
-      "69c5b6",
-      "49c0ba",
-      "36c9d4",
-      "70d2ca",
-      "3fc1c1",
-      "23bbd6",
-      "37c5d4",
-      "64d1c8",
-    ];
+        if (item !== false) {
+          console.log("Success - Found Item");
+          mouseUse(robot, item.x, item.y);
+        }
 
-    let auto = await findElementWithRetry(robot, area, color);
-    // let cordX = 1067;
-    // let cordY = 648;
+        msleep(1500);
 
-    // let pixelColor = robot.getPixelColor(cordX, cordY);
-    // console.log(pixelColor);
-    if (auto !== false) {
-      console.log("Success - Found Auto");
-      mouseUse(robot, auto.x - 3, auto.y + 5);
-      msleep(2000);
+        let expCoordinates = {
+          x: 740,
+          y: 450,
+          width: 787 - 740,
+          height: 500 - 450,
+        };
 
-      mouseUse(robot, 560, 0);
-      mouseUse(robot, 560, 0);
-      mouseUse(robot, 560, 0);
-      msleep(1000);
+        let exp = await findElementWithRetry(robot, expCoordinates, [
+          "0231c1",
+          "1171f4",
+          "0c2f77",
+        ]);
 
-      mouseUse(robot, 1153, 943);
-      msleep(15000);
-      let finishMathc = false;
+        if (exp !== false) {
+          console.log("Success - Found Exp");
+          mouseUse(robot, exp.x, exp.y);
+          msleep(1000);
 
-      while (!finishMathc) {
-        finishMathc = await checkWin(robot);
-        if (finishMathc) {
-          console.log("Match Finish");
-          collectReward(robot);
         }
       }
-    } else {
-      checkTrainers(robot);
-      if (target > 4) {
-        target = 1;
-      }
+      if (parametr.hasOwnProperty('check-result-npc')) {
+        let resultCoordinates = {
+          x: 740,
+          y: 286,
+          width: 787 - 740,
+          height: 320 - 286,
+        };
 
-      switch (target) {
-        case 1:
-          mouseUse(robot, 890, 1045);
-          break;
-        case 2:
-          mouseUse(robot, 1064, 1045);
-          break;
-        case 3:
-          mouseUse(robot, 1258, 1045);
-          break;
-        case 4:
-          mouseUse(robot, 697, 1045);
+        let result = await findElementWithRetry(robot, resultCoordinates, [
+          "222222",
+          "292929",
+          "121411",
+        ]);
+
+        if (result !== false) {
+          console.log("Success - Found Result");
+          mouseUse(robot, result.x, result.y);
+          msleep(1000);
+        }
       }
-      target++;
+      mouseUse(robot, 960, 921);
+      msleep(2000);
+    }
+
+    mouseUse(robot, 1153, 943);
+    msleep(15000);
+    let finishMathc = false;
+
+    while (!finishMathc) {
+      finishMathc = await checkWin(robot);
+      if (finishMathc) {
+        console.log("Match Finish");
+        collectReward(robot);
+      }
     }
   }
+  else {
+   let end = await checkTrainers(robot, parametr);
+   console.log(end);
+   if(!end){
+    console.log('End')
+    return false;
+   }
+
+
+    switch (target) {
+      case 1:
+        mouseUse(robot, 890, 1045);
+        break;
+      case 2:
+        mouseUse(robot, 1064, 1045);
+        break;
+      case 3:
+        mouseUse(robot, 1258, 1045);
+        break;
+      case 4:
+        mouseUse(robot, 697, 1045);
+    }
+  }
+
 }
 
-async function startAutoPvP(robot) {
-  console.log('startAutoPvP');
+async function startAutoPvP(robot, parametr) {
   // msleep(1000);
   // mouseUse(robot, 890, 1040);
   // msleep(500);
@@ -243,6 +296,72 @@ async function startAutoPvP(robot) {
   //   console.log("Success - Found PvP");
   //   mouseUse(robot, pvp.x, pvp.y);
   // }
+  msleep(1500);
+  if(Object.keys(parametr).length !== 0){
+    if (parametr.hasOwnProperty('check-exp-pvp')) {
+      let itemCoordinates = {
+        x: 1230,
+        y: 576,
+        width: 1288 - 1230,
+        height: 600 - 576,
+      };
+  
+      let item = await findElementWithRetry(robot, itemCoordinates, [
+        "aabbce",
+        "829cba",
+        "ffffff",
+      ]);
+  
+      if (item !== false) {
+        console.log("Success - Found Item");
+        mouseUse(robot, item.x, item.y);
+      }
+  
+      msleep(1500);
+  
+      let expCoordinates = {
+        x: 740,
+        y: 425,
+        width: 787 - 740,
+        height: 464 - 425,
+      };
+  
+      let exp = await findElementWithRetry(robot, expCoordinates, [
+        "0231c1",
+        "1171f4",
+        "0c2f77",
+      ]);
+  
+      if (exp !== false) {
+        console.log("Success - Found Exp");
+        mouseUse(robot, exp.x, exp.y);
+        msleep(1000);
+  
+      }
+    }
+    if (parametr.hasOwnProperty('check-result-pvp')) {
+      let resultCoordinates = {
+        x: 740,
+        y: 286,
+        width: 787 - 740,
+        height: 320 - 286,
+      };
+  
+      let result = await findElementWithRetry(robot, resultCoordinates, [
+        "222222",
+        "292929",
+        "121411",
+      ]);
+  
+      if (result !== false) {
+        console.log("Success - Found Result");
+        mouseUse(robot, result.x, result.y);
+        msleep(1000);
+      }
+    }
+    mouseUse(robot, 960, 921);
+    msleep(2000);
+  }
 
   let duelCoordinates = {
     x: 926,
@@ -251,8 +370,6 @@ async function startAutoPvP(robot) {
     height: 560 - 536,
   };
 
-  while (true) {
-    msleep(2000);
     let color = ["cbca32", "eee132", "dedc36", "f6f039", "e2cb2a"];
     let duel = await findElementWithRetry(robot, duelCoordinates, color);
 
@@ -269,7 +386,6 @@ async function startAutoPvP(robot) {
     msleep(2000);
 
     await startDuel(robot);
-  }
 }
 
 
@@ -296,7 +412,12 @@ function findElement(robot, capture, colors) {
       if (colors.includes(sampleColor)) {
         let screenX = i + capture.x;
         let screenY = j + capture.y;
-        return { x: screenX, y: screenY };
+        if (sampleColor === "c34444") {
+          return { x: screenX, y: screenY, color: sampleColor };
+        } else {
+          return { x: screenX, y: screenY };
+        }
+
       }
     }
   }
@@ -313,22 +434,21 @@ function findPerson(robot, capture, colors, key, iteration) {
     capture.width,
     capture.height
   );
-  for (let i = 0; i < img.width; i+=2) {
-    
-    for (let j = 0; j < img.height; j +=4) {
+  for (let i = 0; i < img.width; i += 2) {
+
+    for (let j = 0; j < img.height; j += 4) {
       let sampleColor = img.colorAt(i, j);
 
       if (colors.includes(sampleColor)) {
         let screenX = i + capture.x;
         let screenY = j + capture.y;
         console.timeEnd("findPerson");
-        console.log(sampleColor);
         return { x: screenX, y: screenY };
-        
+
       }
     }
   }
-  
+
   if (key) {
     if (iteration === 1) {
       console.log('Click');
@@ -479,7 +599,7 @@ async function findGatePerson(robot, capture, colors, key = false) {
     msleep(1000);
     element = findPerson(robot, capture, colors, key, iteration);
     ++iteration;
-    console.log(element , iteration);
+    console.log(element, iteration);
   } while (element === false);
 
   return element;
@@ -539,7 +659,6 @@ async function checkWin(robot) {
   let cordY = 33;
 
   let pixelColor = robot.getPixelColor(cordX, cordY);
-  console.log(pixelColor);
   let colorWin = ["ffffff", "808080"];
 
   if (!colorWin.includes(pixelColor)) {
@@ -690,20 +809,27 @@ async function summonMonster(robot) {
   return false;
 }
 
-async function checkTrainers(robot) {
+async function checkTrainers(robot, parametr) {
   let cordX = 651;
   let cordY = 70;
 
   let colorTrainers = ["6666aa"];
   let pixelColor = robot.getPixelColor(cordX, cordY);
   if (colorTrainers.includes(pixelColor)) {
-    mouseUse(robot, cordX, cordY);
-    msleep(2500);
-    mouseUse(robot, 1070, 340);
-    msleep(2500);
-    mouseUse(robot, 1090, 600);
-    msleep(1500);
-    mouseUse(robot, 960, 620);
+    if (parametr.hasOwnProperty("check-restart-npc")) {
+
+      mouseUse(robot, cordX, cordY);
+      msleep(2500);
+      mouseUse(robot, 1070, 340);
+      msleep(2500);
+      mouseUse(robot, 1090, 600);
+      msleep(2000);
+      mouseUse(robot, 960, 620);
+    }else{
+      return false
+    }
+  }else{
+    return true;
   }
 }
 
@@ -730,27 +856,28 @@ async function discardCard(robot) {
 
 }
 
+
 async function switchPerson(robot, person) {
 
   mouseUse(robot, 1185, 600);
   msleep(1500);
-  
+
   switch (person) {
     case "yami":
-      let colorYami = ["dd008d","ad0783", "e70362","d01777","b6009f","b3009d"];
-      
+      let colorYami = ["dd008d", "ad0783", "e70362", "d01777", "b6009f", "b3009d"];
+
       await searchPerson(robot, colorYami);
       break;
     case "bonz":
-      let colorBonz = ["4c5e8b","3a445e","4f5d8b", "505a8d", "4a558e"];
+      let colorBonz = ["4c5e8b", "3a445e", "4f5d8b", "505a8d", "4a558e"];
       await searchPerson(robot, colorBonz);
       break;
     case "mai":
-      let colorMai = ["9e9955","ddd075","dddb6f","a19955", "ddda75","ddd875"];
+      let colorMai = ["9e9955", "ddd075", "dddb6f", "a19955", "ddda75", "ddd875"];
       await searchPerson(robot, colorMai);
       break;
     case "tristan":
-      let colorTristan = ["504513","635d34","594f1b","504316","411f1f","2a1212"] // rework
+      let colorTristan = ["504513", "635d34", "594f1b", "504316", "411f1f", "2a1212"] // rework
       await searchPerson(robot, colorTristan);
       break;
   }
