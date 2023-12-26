@@ -1,43 +1,115 @@
-async function startBot(robot) {
+async function startBot(robot, parametr) {
   console.log('StartBot');
-    msleep(2000);
+  msleep(1500);
 
-    mouseUse(robot, 1090, 468);
+  mouseUse(robot, 1090, 468);
+  msleep(3500);
 
-    let duelCoordinates = {
-      x: 925,
-      y: 900,
-      width: 1000 - 920,
-      height: 950 - 900,
+  if (parametr.hasOwnProperty('check-person')) {
+    switchPerson(robot, parametr['check-person']);
+  }
+
+
+  let duelCoordinates = {
+    x: 925,
+    y: 900,
+    width: 1000 - 920,
+    height: 950 - 900,
+  };
+
+
+  let duel = await findElementWithRetry(robot, duelCoordinates, [
+    "cbca32",
+    "eee132",
+    "dedc36",
+    "f6f039",
+  ]);
+
+  if (duel !== false) {
+    console.log("Success - Found Duel");
+    mouseUse(robot, duel.x, duel.y);
+  }
+
+  msleep(2000);
+
+  mouseUse(robot, 560, 0);
+  mouseUse(robot, 560, 0);
+  msleep(200);
+  mouseUse(robot, 560, 0);
+  msleep(1000);
+
+  if (parametr.hasOwnProperty('check-exp')) {
+    let itemCoordinates = {
+      x: 1270,
+      y: 814,
+      width: 1335 - 1270,
+      height: 834 - 814,
     };
-    msleep(4000);
 
-    let duel = await findElementWithRetry(robot, duelCoordinates, [
-      "cbca32",
-      "eee132",
-      "dedc36",
-      "f6f039",
+    let item = await findElementWithRetry(robot, itemCoordinates, [
+      "aabbce",
+      "829cba",
+      "ffffff",
     ]);
 
-    if (duel !== false) {
-      console.log("Success - Found Duel");
-      mouseUse(robot, duel.x, duel.y);
+    if (item !== false) {
+      console.log("Success - Found Item");
+      mouseUse(robot, item.x, item.y);
     }
 
+    msleep(1500);
+
+    let expCoordinates = {
+      x: 740,
+      y: 450,
+      width: 787 - 740,
+      height: 500 - 450,
+    };
+
+    let exp = await findElementWithRetry(robot, expCoordinates, [
+      "0231c1",
+      "1171f4",
+      "0c2f77",
+    ]);
+
+    if (exp !== false) {
+      console.log("Success - Found Exp");
+      mouseUse(robot, exp.x, exp.y);
+      msleep(1000);
+
+    }
+
+    if (parametr.hasOwnProperty('check-result')) {
+      let resultCoordinates = {
+        x: 740,
+        y: 286,
+        width: 787 - 740,
+        height: 320 - 286,
+      };
+
+      let result = await findElementWithRetry(robot, resultCoordinates, [
+        "222222",
+        "292929",
+        "121411",
+      ]);
+
+      if (result !== false) {
+        console.log("Success - Found Result");
+        mouseUse(robot, result.x, result.y);
+        msleep(1000);
+      }
+    }
+
+    mouseUse(robot, 960, 921);
     msleep(2000);
+  }
 
-    mouseUse(robot, 560, 0);
-    mouseUse(robot, 560, 0);
-    msleep(200);
-    mouseUse(robot, 560, 0);
-    msleep(1000);
+  if (duel !== false) {
+    console.log("Success - Found Duel Again");
+    mouseUse(robot, duel.x, duel.y);
+  }
 
-    if (duel !== false) {
-      console.log("Success - Found Duel Again");
-      mouseUse(robot, duel.x, duel.y);
-    }
-
-    await startDuel(robot, true);
+  await startDuel(robot, true);
 
 
 }
@@ -217,7 +289,6 @@ function findElement(robot, capture, colors) {
     capture.width,
     capture.height
   );
-
   for (let i = 0; i < img.width; i++) {
     for (let j = 0; j < img.height; j++) {
       let sampleColor = img.colorAt(i, j);
@@ -232,6 +303,51 @@ function findElement(robot, capture, colors) {
 
   return false;
 }
+
+function findPerson(robot, capture, colors, key, iteration) {
+  console.time("findPerson");
+
+  const img = robot.screen.capture(
+    capture.x,
+    capture.y,
+    capture.width,
+    capture.height
+  );
+  for (let i = 0; i < img.width; i+=2) {
+    
+    for (let j = 0; j < img.height; j +=4) {
+      let sampleColor = img.colorAt(i, j);
+
+      if (colors.includes(sampleColor)) {
+        let screenX = i + capture.x;
+        let screenY = j + capture.y;
+        console.timeEnd("findPerson");
+        console.log(sampleColor);
+        return { x: screenX, y: screenY };
+        
+      }
+    }
+  }
+  
+  if (key) {
+    if (iteration === 1) {
+      console.log('Click');
+      mouseUse(robot, 1215, 420);
+    }
+    else if (iteration === 2) {
+      mouseUse(robot, 1215, 515);
+    }
+    else if (iteration === 3) {
+      mouseUse(robot, 1215, 650);
+    }
+    else {
+      mouseUse(robot, 1215, 775);
+      return false;
+    }
+  }
+  return false;
+}
+
 
 function clickPhase(robot) {
   const capture = {
@@ -351,6 +467,19 @@ async function findElementWithRetry(robot, capture, colors) {
     if (element === false) {
       return false;
     }
+  } while (element === false);
+
+  return element;
+}
+
+async function findGatePerson(robot, capture, colors, key = false) {
+  let element;
+  let iteration = 1;
+  do {
+    msleep(1000);
+    element = findPerson(robot, capture, colors, key, iteration);
+    ++iteration;
+    console.log(element , iteration);
   } while (element === false);
 
   return element;
@@ -493,7 +622,7 @@ async function playerTurn(robot) {
     capture.height
   );
 
-  let cardChouse = ["42455a","1d2040","52525c"];
+  let cardChouse = ["42455a", "1d2040", "52525c"];
 
   for (let i = 0; i < img.width; i++) {
     for (let j = 0; j < img.height; j++) {
@@ -601,6 +730,47 @@ async function discardCard(robot) {
 
 }
 
+async function switchPerson(robot, person) {
+
+  mouseUse(robot, 1185, 600);
+  msleep(1500);
+  
+  switch (person) {
+    case "yami":
+      let colorYami = ["dd008d","ad0783", "e70362","d01777","b6009f","b3009d"];
+      
+      await searchPerson(robot, colorYami);
+      break;
+    case "bonz":
+      let colorBonz = ["4c5e8b","3a445e","4f5d8b", "505a8d", "4a558e"];
+      await searchPerson(robot, colorBonz);
+      break;
+    case "mai":
+      let colorMai = ["9e9955","ddd075","dddb6f","a19955", "ddda75","ddd875"];
+      await searchPerson(robot, colorMai);
+      break;
+    case "tristan":
+      let colorTristan = ["504513","635d34","594f1b","504316","411f1f","2a1212"] // rework
+      await searchPerson(robot, colorTristan);
+      break;
+  }
+}
+
+async function searchPerson(robot, color) {
+  let area = {
+    x: 730,
+    y: 238,
+    width: 1184 - 730,
+    height: 927 - 238,
+  }
+  let key = true;
+  let search = await findGatePerson(robot, area, color, key);
+
+  if (search !== false) {
+    console.log("Success - Found Person");
+    mouseUse(robot, search.x, search.y);
+  }
+}
 
 module.exports = {
   startBot,

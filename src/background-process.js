@@ -12,15 +12,15 @@ process.on("message", async (message) => {
    if (command === "startBot") {
     let updatedValue = "true";
     while(updatedValue === "true"){
-      await mouseEvent.startBot(robot);
+      console.log(invertedValue);
+      await mouseEvent.startBot(robot,invertedValue);
       const data = fs.readFileSync(filePath, 'utf8');
       updatedValue = data.trim();
-      console.log(updatedValue);
-      console.log(typeof updatedValue);
     }
     process.send({ status: "completed" });
     process.exit();
   } else if (command === "startAutoDuel") {
+    console.log(invertedValue);
     await mouseEvent.startAutoDuel(robot);
     process.send({ status: "completed" });
     process.exit();

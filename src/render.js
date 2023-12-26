@@ -27,6 +27,25 @@ document.addEventListener("DOMContentLoaded", () => {
     api.on("update-stop-flag", (event, newValue) => {
       stopFlagElement.textContent = newValue;
     });
+
+    api.on("request-info-for-F6", () => {
+      const info = checkCheckboxState();
+      api.send("response-info-for-F6", info);
+    });
+
+    api.on("request-info-for-F5", () => {
+      const info = checkCheckboxState();
+
+      api.send("response-info-for-F5", info);
+    });
+
+
+    api.on("request-info-for-F1", () => {
+      const infoForF1 = checkCheckboxState();
+      api.send("response-info-for-F1", infoForF1);
+    });
+
+
   }, 2000);
 
   let intervalId;
@@ -35,10 +54,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const button = document.querySelector(".btn-gate");
     const buttonAuto = document.querySelector(".btn-npc");
     const buttonPvP = document.querySelector(".btn-pvp");
+    const info = [1, 2, 3]
 
     if (button) {
       button.addEventListener("click", () => {
-        api.send("button-clicked");
+        api.send("button-clicked", info);
       });
     }
 
@@ -53,6 +73,31 @@ document.addEventListener("DOMContentLoaded", () => {
         api.send("button-clicked-pvp");
       });
     }
+
+
+  }
+
+  function checkCheckboxState() {
+    let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    let stateObject = {};
+
+    checkboxes.forEach(function(checkbox) {
+      if (checkbox.checked) {
+          if (checkbox.id === 'check-person') {
+              let slickSlide = document.querySelector('.slick-slide.slick-active.slick-current');
+              if (slickSlide) {
+                  let img = slickSlide.querySelector('img');
+                  if (img && img.alt) {
+                      stateObject[checkbox.id] = img.alt; 
+                  }
+              }
+          } else {
+              stateObject[checkbox.id] = true; 
+          }
+      }
+  });
+
+    return stateObject; // Выводим состояния в консоль для проверки
   }
 
   intervalId = setInterval(() => {

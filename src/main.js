@@ -2,7 +2,7 @@ const path = require("path");
 const { app, BrowserWindow, ipcMain } = require("electron");
 const keyboard = require("./actions/keyboard.js");
 const { fork } = require("child_process");
-const { spawnProcess} = createBackgroundProcessPool();
+const { spawnProcess } = createBackgroundProcessPool();
 const fs = require('fs');
 
 const filePath = path.join(__dirname, '../resources/data/check.txt');
@@ -31,24 +31,39 @@ function createWindow() {
   win.setMenuBarVisibility(false);
 
   win.loadFile(path.join(__dirname, "index.html"));
-  // win.loadURL('http://localhost:3000');
+
+  win.webContents.openDevTools();
 
   keyboard.registerHotkeyAndFunction(ipcMain, "F6", () =>
-    spawnProcess("startBot")
+    win.webContents.send("request-info-for-F6")
   );
-  keyboard.registerHotkeyAndFunction(ipcMain, "F5", () =>
-    spawnProcess("startAutoDuel")
-  );
-  keyboard.registerHotkeyAndFunction(ipcMain, "F1", () =>
-    spawnProcess("startAutoPvP")
-  );
+  
+  ipcMain.on("response-info-for-F6", (event, info) => {
+    spawnProcess("startBot", info);
+  });
+
+  keyboard.registerHotkeyAndFunction(ipcMain, "F5", () => {
+    win.webContents.send("request-info-for-F5");
+  });
+
+  ipcMain.on("response-info-for-F5", (event, info) => {
+    spawnProcess("startAutoDuel", info);
+  });
+
+  keyboard.registerHotkeyAndFunction(ipcMain, "F1", () => {
+    win.webContents.send("request-info-for-F1");
+  });
+
+  ipcMain.on("response-info-for-F1", (event, info) => {
+    spawnProcess("startAutoPvP", info);
+  });
+
 
   win.webContents.on("dom-ready", async () => {
     try {
-
       let sharedFlagValue = "true";
-      ipcMain.on("button-clicked", () => {
-        spawnProcess("startBot");
+      ipcMain.on("button-clicked", (event, data) => {
+        spawnProcess("startBot", data);
       });
 
       ipcMain.on("button-clicked-auto", () => {
@@ -87,14 +102,14 @@ let isFunctionRunning = false;
 
 
 function createBackgroundProcessPool() {
-  function spawnProcess(command) {
+  function spawnProcess(command, invertedValue = undefined) {
     if (isFunctionRunning && command !== "toggleFlag") {
       console.log(`Function ${command} is already running. Skipping...`);
       return;
     }
 
     isFunctionRunning = true;
-    commandQueue.push({ command, invertedValue: undefined });
+    commandQueue.push({ command, invertedValue });
 
     if (isProcessRunning) return;
     executeNextCommand();
