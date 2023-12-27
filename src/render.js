@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     api.on("request-info-for-F6", () => {
       const info = checkCheckboxState();
+      console.log(info);
       api.send("response-info-for-F6", info);
     });
 
@@ -53,24 +54,27 @@ document.addEventListener("DOMContentLoaded", () => {
   function setupHandlers() {
     const button = document.querySelector(".btn-gate");
     const buttonAuto = document.querySelector(".btn-npc");
-    const buttonPvP = document.querySelector(".btn-pvp");
-    const info = [1, 2, 3]
+    const buttonPvP = document.querySelector(".btn-pvp")
+    const info = checkCheckboxState();
 
     if (button) {
       button.addEventListener("click", () => {
+        const info = checkCheckboxState();
         api.send("button-clicked", info);
       });
     }
 
     if (buttonAuto) {
       buttonAuto.addEventListener("click", () => {
-        api.send("button-clicked-auto");
+        const info = checkCheckboxState();
+        api.send("button-clicked-auto", info);
       });
     }
 
     if (buttonPvP) {
       buttonPvP.addEventListener("click", () => {
-        api.send("button-clicked-pvp");
+        const info = checkCheckboxState();
+        api.send("button-clicked-pvp", info);
       });
     }
 
@@ -81,23 +85,31 @@ document.addEventListener("DOMContentLoaded", () => {
     let checkboxes = document.querySelectorAll('input[type="checkbox"]');
     let stateObject = {};
 
-    checkboxes.forEach(function(checkbox) {
+    checkboxes.forEach(function (checkbox) {
       if (checkbox.checked) {
-          if (checkbox.id === 'check-person') {
-              let slickSlide = document.querySelector('.slick-slide.slick-active.slick-current');
-              if (slickSlide) {
-                  let img = slickSlide.querySelector('img');
-                  if (img && img.alt) {
-                      stateObject[checkbox.id] = img.alt; 
-                  }
-              }
-          } else {
-              stateObject[checkbox.id] = true; 
+        if (checkbox.id === 'check-time') {
+          let timerContainer = document.querySelector('.timer__container');
+          if (timerContainer) {
+            let timerInput = timerContainer.querySelector('#numberInput');
+            if (timerInput && timerInput.value) {
+              stateObject[checkbox.id] = +timerInput.value;
+            }
           }
+        } else if (checkbox.id === 'check-person') {
+          let slickSlide = document.querySelector('.slick-slide.slick-active.slick-current');
+          if (slickSlide) {
+            let img = slickSlide.querySelector('img');
+            if (img && img.alt) {
+              stateObject[checkbox.id] = img.alt;
+            }
+          }
+        } else {
+          stateObject[checkbox.id] = true;
+        }
       }
-  });
+    });
 
-    return stateObject; 
+    return stateObject;
   }
 
   intervalId = setInterval(() => {

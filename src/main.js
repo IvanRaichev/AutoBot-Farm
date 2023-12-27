@@ -22,6 +22,7 @@ function createWindow() {
     width: 1000,
     height: 520,
     resizable: false,
+    icon: path.join(__dirname, '../src/static/media/icon.ico'),
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, "preload.js"),
@@ -63,6 +64,7 @@ function createWindow() {
     try {
       let sharedFlagValue = "true";
       ipcMain.on("button-clicked", (event, data) => {
+        console.log(data);
         spawnProcess("startBot", data);
       });
 

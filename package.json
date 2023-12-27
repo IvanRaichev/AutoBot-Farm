@@ -1,22 +1,36 @@
 {
-  "name": "auto-bot-farming",
+  "name": "yu-gi-oh",
   "version": "1.0.0",
-  "description": "",
+  "description": "test",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager ."
+    "build": "electron-packager .",
+    "dist": "electron-builder"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "electron": "^20.3.12",
     "electron-localshortcut": "^3.2.1",
     "electron-packager": "^17.1.2",
+    "node-abi": "^3.52.0",
     "robotjs": "^0.6.0"
   },
   "devDependencies": {
-    "@electron/rebuild": "^3.3.0"
+    "@electron/rebuild": "^3.3.0",
+    "electron": "^20.3.12",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.yugioh.app",
+    "productName": "Yu-Gi-Oh Duel Links Bot",
+    "win": {
+      "target": "NSIS"
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false
+    }
   }
 }

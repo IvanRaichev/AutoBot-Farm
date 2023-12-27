@@ -555,7 +555,7 @@ function collectReward(robot) {
   let cordY = 996;
   let i = 0;
 
-  while (i < 40) {
+  while (i < 35) {
     msleep(500);
     mouseUse(robot, cordX, cordY);
     ++i;

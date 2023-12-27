@@ -9,20 +9,35 @@ process.on("message", async (message) => {
 
   const { command, invertedValue } = message;
   let updatedValue = "true";
-   if (command === "startBot") {
-    
-    while(updatedValue === "true"){
-      await mouseEvent.startBot(robot,invertedValue);
-      const data = fs.readFileSync(filePath, 'utf8');
-      updatedValue = data.trim();
+
+  if (command === "startBot") {
+
+    let startTime = Date.now();
+    let target = 1;
+    if (invertedValue['check-time']) {
+      let input = invertedValue['check-time'];
+      const maxDuration = parseInt(input) * 60 * 1000;
+      while (Date.now() - startTime < maxDuration && updatedValue === "true") {
+        
+        await mouseEvent.startBot(robot, invertedValue); 
+        const data = fs.readFileSync(filePath, 'utf8');
+        updatedValue = data.trim();
+      }
+    } else {
+      while (updatedValue === "true") {
+        await mouseEvent.startBot(robot, invertedValue);
+        const data = fs.readFileSync(filePath, 'utf8');
+        updatedValue = data.trim();
+      }
     }
+
     process.send({ status: "completed" });
     process.exit();
   } else if (command === "startAutoDuel") {
     let target = 1
-    while(updatedValue === "true"){
+    while (updatedValue === "true") {
 
-      await mouseEvent.startAutoDuel(robot,target,invertedValue);
+      await mouseEvent.startAutoDuel(robot, target, invertedValue);
 
       ++target;
 
@@ -31,15 +46,15 @@ process.on("message", async (message) => {
       if (target > 4) {
         target = 1;
       }
-      
+
       const data = fs.readFileSync(filePath, 'utf8');
       updatedValue = data.trim();
     }
     process.send({ status: "completed" });
     process.exit();
   } else if (command === "startAutoPvP") {
-    while(updatedValue === "true"){
-      await mouseEvent.startAutoPvP(robot,invertedValue);
+    while (updatedValue === "true") {
+      await mouseEvent.startAutoPvP(robot, invertedValue);
       const data = fs.readFileSync(filePath, 'utf8');
       updatedValue = data.trim();
     }
