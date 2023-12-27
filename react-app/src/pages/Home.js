@@ -8,6 +8,7 @@ import Button from "../components/button/Button"
 import SimpleSlider from "../components/slider/SimpleSlider"
 import Input from "../components/input/Input"
 
+
 const Home = () => {
    const [isTimeChecked, setIsTimeChecked] = useState(false);
 

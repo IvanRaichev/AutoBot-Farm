@@ -32,32 +32,47 @@ function createWindow() {
   win.setMenuBarVisibility(false);
 
   win.loadFile(path.join(__dirname, "index.html"));
+  // win.loadURL("http://localhost:3000")
 
   win.webContents.openDevTools();
 
-  keyboard.registerHotkeyAndFunction(ipcMain, "F6", () =>
-    win.webContents.send("request-info-for-F6")
+  keyboard.registerHotkeyAndFunction(ipcMain, "F1", () =>
+    win.webContents.send("request-info-for-F1")
   );
 
-  ipcMain.on("response-info-for-F6", (event, info) => {
+  keyboard.registerHotkeyAndFunction(ipcMain, "F2", () => {
+    win.webContents.send("request-info-for-F2");
+  });
+
+
+  keyboard.registerHotkeyAndFunction(ipcMain, "F3", () => {
+    win.webContents.send("request-info-for-F3");
+  });
+
+  keyboard.registerHotkeyAndFunction(ipcMain, "F4", () => {
+    win.webContents.send("request-info-for-F4");
+  });
+
+
+
+  ipcMain.on("response-info-for-F1", (event, info) => {
     spawnProcess("startBot", info);
   });
 
-  keyboard.registerHotkeyAndFunction(ipcMain, "F5", () => {
-    win.webContents.send("request-info-for-F5");
-  });
-
-  ipcMain.on("response-info-for-F5", (event, info) => {
+  ipcMain.on("response-info-for-F2", (event, info) => {
     spawnProcess("startAutoDuel", info);
   });
 
-  keyboard.registerHotkeyAndFunction(ipcMain, "F1", () => {
-    win.webContents.send("request-info-for-F1");
-  });
 
-  ipcMain.on("response-info-for-F1", (event, info) => {
+  ipcMain.on("response-info-for-F3", (event, info) => {
     spawnProcess("startAutoPvP", info);
   });
+
+
+
+  
+
+
 
 
   win.webContents.on("dom-ready", async () => {

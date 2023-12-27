@@ -17,28 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
       subtree: true,
     });
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "F2") {
-        const currentValue = stopFlagElement.textContent.trim();
-        api.send('toggle-stop-flag', currentValue);
-      }
-    });
 
-    api.on("update-stop-flag", (event, newValue) => {
-      stopFlagElement.textContent = newValue;
-    });
 
-    api.on("request-info-for-F6", () => {
-      const info = checkCheckboxState();
-      console.log(info);
-      api.send("response-info-for-F6", info);
-    });
-
-    api.on("request-info-for-F5", () => {
-      const info = checkCheckboxState();
-
-      api.send("response-info-for-F5", info);
-    });
 
 
     api.on("request-info-for-F1", () => {
@@ -46,6 +26,26 @@ document.addEventListener("DOMContentLoaded", () => {
       api.send("response-info-for-F1", info);
     });
 
+    api.on("request-info-for-F2", () => {
+      const info = checkCheckboxState();
+
+      api.send("response-info-for-F2", info);
+    });
+
+
+    api.on("request-info-for-F3", () => {
+      const info = checkCheckboxState();
+      api.send("response-info-for-F3", info);
+    });
+
+    api.on("request-info-for-F4", () => {
+      const currentValue = stopFlagElement.textContent.trim();
+      api.send('toggle-stop-flag', currentValue);
+    });
+        
+    api.on("update-stop-flag", (event, newValue) => {
+      stopFlagElement.textContent = newValue;
+    });
 
   }, 2000);
 
