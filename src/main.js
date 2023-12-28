@@ -32,7 +32,6 @@ function createWindow() {
   win.setMenuBarVisibility(false);
 
   win.loadFile(path.join(__dirname, "index.html"));
-  // win.loadURL("http://localhost:3000")
 
   win.webContents.openDevTools();
 
@@ -57,38 +56,48 @@ function createWindow() {
 
   ipcMain.on("response-info-for-F1", (event, info) => {
     spawnProcess("startBot", info);
+    if (win) {
+      win.minimize();
+  }
   });
 
   ipcMain.on("response-info-for-F2", (event, info) => {
     spawnProcess("startAutoDuel", info);
+    if (win) {
+      win.minimize();
+  }
   });
 
 
   ipcMain.on("response-info-for-F3", (event, info) => {
     spawnProcess("startAutoPvP", info);
+    if (win) {
+      win.minimize();
+  }
   });
-
-
-
-  
-
-
-
 
   win.webContents.on("dom-ready", async () => {
     try {
       let sharedFlagValue = "true";
       ipcMain.on("button-clicked", (event, data) => {
-        console.log(data);
         spawnProcess("startBot", data);
+        if (win) {
+          win.minimize();
+      }
       });
 
       ipcMain.on("button-clicked-auto", (event, data) => {
         spawnProcess("startAutoDuel", data);
+        if (win) {
+          win.minimize();
+      }
       });
 
       ipcMain.on("button-clicked-pvp", (event, data) => {
         spawnProcess("startAutoPvP", data);
+        if (win) {
+          win.minimize();
+      }
       });
 
       ipcMain.on('toggle-stop-flag', (event, currentValue) => {

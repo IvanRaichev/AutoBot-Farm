@@ -132,6 +132,8 @@ async function startAutoDuel(robot, target, parametr) {
     "d7f2f2",
     "d7f3f5",
     "1fc6da",
+    "0fd2e8",
+    "2adbea",
     // "e4ffff",
     "3fb9c4",
     "c34444",
@@ -163,7 +165,7 @@ async function startAutoDuel(robot, target, parametr) {
 
   if (auto !== false) {
     console.log("Success - Found Auto");
-    mouseUse(robot, auto.x - 3, auto.y + 5);
+    mouseUse(robot, auto.x - 1, auto.y + 5);
     msleep(2000);
 
     mouseUse(robot, 560, 0);
@@ -247,6 +249,7 @@ async function startAutoDuel(robot, target, parametr) {
         collectReward(robot);
       }
     }
+    return true;
   }
   else {
    let end = await checkTrainers(robot, parametr);
@@ -255,7 +258,6 @@ async function startAutoDuel(robot, target, parametr) {
     console.log('End')
     return false;
    }
-
 
     switch (target) {
       case 1:
@@ -271,7 +273,6 @@ async function startAutoDuel(robot, target, parametr) {
         mouseUse(robot, 697, 1045);
     }
   }
-
 }
 
 async function startAutoPvP(robot, parametr) {
@@ -823,7 +824,7 @@ async function checkTrainers(robot, parametr) {
       mouseUse(robot, 1070, 340);
       msleep(2500);
       mouseUse(robot, 1090, 600);
-      msleep(2000);
+      msleep(2500);
       mouseUse(robot, 960, 620);
     }else{
       return false

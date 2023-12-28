@@ -37,9 +37,11 @@ process.on("message", async (message) => {
     let target = 1
     while (updatedValue === "true") {
 
-      await mouseEvent.startAutoDuel(robot, target, invertedValue);
-
-      ++target;
+      let res = await mouseEvent.startAutoDuel(robot, target, invertedValue);
+     
+      if(!res){
+        ++target;
+      }
 
       console.log(target);
 
