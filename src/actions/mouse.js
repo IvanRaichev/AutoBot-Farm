@@ -134,7 +134,6 @@ async function startAutoDuel(robot, target, parametr) {
     "1fc6da",
     "0fd2e8",
     "2adbea",
-    // "e4ffff",
     "3fb9c4",
     "c34444",
     "4dbeb8",
@@ -276,27 +275,7 @@ async function startAutoDuel(robot, target, parametr) {
 }
 
 async function startAutoPvP(robot, parametr) {
-  // msleep(1000);
-  // mouseUse(robot, 890, 1040);
-  // msleep(500);
-  // mouseUse(robot, 890, 1040);
-  // msleep(2500);
 
-  // let PvPCoordinates = {
-  //   x: 640,
-  //   y: 130,
-  //   width: 830 - 640,
-  //   height: 410 - 130,
-  // };
-
-  // let color = ["27ffd4"];
-
-  // let pvp = await findElementWithRetry(robot, PvPCoordinates, color);
-
-  // if (pvp !== false) {
-  //   console.log("Success - Found PvP");
-  //   mouseUse(robot, pvp.x, pvp.y);
-  // }
   msleep(1500);
   if(Object.keys(parametr).length !== 0){
     if (parametr.hasOwnProperty('check-exp-pvp')) {
@@ -878,7 +857,7 @@ async function switchPerson(robot, person) {
       await searchPerson(robot, colorMai);
       break;
     case "tristan":
-      let colorTristan = ["504513", "635d34", "594f1b", "504316", "411f1f", "2a1212"] // rework
+      let colorTristan = ["504513", "635d34", "594f1b", "504316", "411f1f", "2a1212"]
       await searchPerson(robot, colorTristan);
       break;
   }

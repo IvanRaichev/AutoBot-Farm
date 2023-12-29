@@ -13,7 +13,6 @@ if (!fs.existsSync(filePath)) {
   const currentValue = fs.readFileSync(filePath, 'utf8').trim();
   if (currentValue !== 'true') {
     fs.writeFileSync(filePath, 'true');
-    console.log('check.txt has been updated with value: true');
   }
 }
 
@@ -32,8 +31,6 @@ function createWindow() {
   win.setMenuBarVisibility(false);
 
   win.loadFile(path.join(__dirname, "index.html"));
-
-  win.webContents.openDevTools();
 
   keyboard.registerHotkeyAndFunction(ipcMain, "F1", () =>
     win.webContents.send("request-info-for-F1")
