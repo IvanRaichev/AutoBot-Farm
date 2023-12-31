@@ -1,6 +1,6 @@
-# AutoBot-Farm for game Yu-Gi-Oh! 
+# AutoBot-Farm for game Yu-Gi-Oh Duel Links! 
 
-Create by ElectronJS + React + RobotJS
+Create by Electron + React + RobotJS
 
 
 ## Developers
