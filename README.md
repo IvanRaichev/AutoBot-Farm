@@ -9,8 +9,8 @@ Create by Electron + React + RobotJS
 ![JavaScript](https://img.shields.io/badge/-JavaScript-f7df1e?logo=javaScript&logoColor=black)
 ![Gulp](https://img.shields.io/badge/-Gulp-99d6f8?logo=gulp&logoColor=black)
 ![BEM](https://img.shields.io/badge/-BEM-yellowgreen)
-![BEM](https://img.shields.io/badge/-React-yellowblack)
-![BEM](https://img.shields.io/badge/-Electron-yellowblue)
+![React](https://img.shields.io/badge/-React-1572b6?logo=react&logoColor=yellowblue)
+![Electron](https://img.shields.io/badge/-Electron-f7df2e?logo=electron&logoColor=yelloworange)
 
 
 ## Developers
