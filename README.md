@@ -11,7 +11,7 @@ Create by Electron + React + RobotJS
 ![BEM](https://img.shields.io/badge/-BEM-yellowgreen)
 ![React](https://img.shields.io/badge/-React-1572b6?logo=react&logoColor=yellowblue)
 ![Electron](https://img.shields.io/badge/-Electron-f7df2e?logo=electron&logoColor=yelloworange)
-
+![Webpack](https://img.shields.io/badge/-Webpack-yellowblack)
 
 ## Developers
 
