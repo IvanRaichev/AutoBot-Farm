@@ -10,9 +10,5 @@ module.exports = {
   screen: {
     width: 1920,  
     height: 1080  
-  },
-  additionalConfig: {
-    sensitivity: 3.0,
-    customFunctionality: true,
   }
 };
