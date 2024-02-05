@@ -1,4 +1,4 @@
-# AutoBot-Farm for game Yu-Gi-Oh Duel Links! 
+# AutoBot-Farm V 1.0 for game Yu-Gi-Oh Duel Links! 
 
 Create by Electron + React + RobotJS
 
