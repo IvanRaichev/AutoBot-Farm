@@ -1,7 +1,6 @@
 module.exports = {
   mouse: {
     acceleration: 1.5,
-    smoothing: 2.0,  
     inverted: false  
   },
   keyboard: {
