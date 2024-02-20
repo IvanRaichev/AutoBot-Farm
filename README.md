@@ -13,7 +13,7 @@ Create by Electron + React + RobotJS
 ![Electron](https://img.shields.io/badge/-Electron-f7df2e?logo=electron&logoColor=yelloworange)
 ![Webpack](https://img.shields.io/badge/-Webpack-yellowblack)
 
-##Installing
+## Installing
 
 - Download
 - npm install
