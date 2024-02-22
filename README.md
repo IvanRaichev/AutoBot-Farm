@@ -17,7 +17,6 @@ Create by Electron + React + RobotJS
 
 - Download
 - npm install
-- npm run 
 
 
 ## Developers
