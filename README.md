@@ -20,6 +20,8 @@ Create by Electron + React + RobotJS
 
 ##Use Guide
 
+- Start .exe file
+
 ## Developers
 
 - [IvanRaichev](https://github.com/IvanRaichev)
