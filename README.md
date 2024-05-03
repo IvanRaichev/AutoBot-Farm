@@ -1,5 +1,7 @@
 # AutoBot-Farm V 1.0 for Yu-Gi-Oh Duel Links! 
 
+<img src = "https://i.ibb.co/z2tcBn4/image.png" alt ="Project logo" width = "726">
+
 Create by Electron + React + RobotJS
 
 
