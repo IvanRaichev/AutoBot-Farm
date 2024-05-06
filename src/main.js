@@ -32,6 +32,8 @@ function createWindow() {
 
   win.loadFile(path.join(__dirname, "index.html"));
 
+  //register hotKey
+  
   keyboard.registerHotkeyAndFunction(ipcMain, "F1", () =>
     win.webContents.send("request-info-for-F1")
   );
@@ -73,6 +75,8 @@ function createWindow() {
   }
   });
 
+ //create window
+  
   win.webContents.on("dom-ready", async () => {
     try {
       let sharedFlagValue = "true";
@@ -123,6 +127,7 @@ const commandQueue = [];
 let isProcessRunning = false;
 let isFunctionRunning = false;
 
+//create backgroundProcess
 
 function createBackgroundProcessPool() {
   function spawnProcess(command, invertedValue = undefined) {
