@@ -175,6 +175,8 @@ function createBackgroundProcessPool() {
   };
 }
 
+//render window
+
 function startRender() {
   app.whenReady().then(() => {
     createWindow();
