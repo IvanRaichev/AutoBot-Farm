@@ -1,3 +1,4 @@
+//backend chapter
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     const stopFlagElement = document.querySelector(".stop-flag");
