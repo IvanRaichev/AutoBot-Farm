@@ -5,7 +5,7 @@ const { fork } = require("child_process");
 const { spawnProcess } = createBackgroundProcessPool();
 const fs = require('fs');
 
-//check stop HotKey
+//check stop HotKeys
 const filePath = path.join(__dirname, '../resources/data/check.txt');
 
 if (!fs.existsSync(filePath)) {
