@@ -1,5 +1,7 @@
 const { ipcRenderer, contextBridge } = require("electron");
 
+//preload script
+
 contextBridge.exposeInMainWorld("api", {
   send: (channel, data = undefined) => {
     if (data !== undefined) {
